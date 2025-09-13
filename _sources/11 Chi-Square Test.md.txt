@@ -1,0 +1,187 @@
+# 11 The Chi-Square Test
+
+### 11.1 What the Chi-Square Test Looks At
+
+The **chi-square (chi2) test** is a powerful statistical tool used to analyze categorical data. Unlike the t-tests or ANOVA, which compare means of continuous data, the chi-square test helps us determine if there is a significant association between two **nominal** or **ordinal** variables. In essence, it answers the question: "Are the observed frequencies of a category different from what we would expect by chance?"
+
+In educational policy, this test is incredibly useful for exploring relationships between variables like:
+
+- **Gender and student enrollment in a specific subject:** Is there a relationship between a student's gender (nominal) and whether they are enrolled in an advanced science class (nominal: Yes/No)?
+- **School location and attendance rates:** Is there an association between a school being in a rural or urban area (nominal) and its chronic absenteeism rate (ordinal: Low, Medium, High)?
+- **Teacher qualification and school type:** Is a teacher's highest qualification (ordinal: Bachelor's, Master's, PhD) associated with the type of school they work at (nominal: Public, Private, Charter)?
+
+The chi-square test helps us determine if any observed patterns in these relationships are statistically significant or simply due to random variation.
+
+------
+
+
+
+### 11.2 How to Interpret the Results
+
+
+
+The core of the chi-square test lies in comparing observed frequencies to expected frequencies.
+
+- **Observed Frequencies:** The actual counts of how often each combination of categories occurs in your data.
+- **Expected Frequencies:** The counts you would expect to see in each combination of categories if there were no relationship between the two variables.
+
+The chi-square statistic itself is a single number that summarizes the difference between these observed and expected counts. A larger chi-square value indicates a greater discrepancy between what you observed and what you would expect, suggesting a stronger relationship between the variables.
+
+However, the most important value to look at is the **p-value**.
+
+- If the **p-value is less than your significance level** (e.g., $p \< 0.05$), you can conclude that there is a **statistically significant association** between the two variables. This means the relationship you observed is likely not due to chance.
+- If the **p-value is greater than your significance level** (p0.05), you **fail to reject the null hypothesis**. This means there is not enough evidence to conclude there is a significant association between the variables.
+
+**Assumptions to Check:**
+
+- **Independence of Observations:** Each observation in your dataset must be independent of the others. For example, one student's gender shouldn't influence another's.
+- **Sufficiently Large Sample Size:** The chi-square test performs best with a decent sample size. A common rule of thumb is that no more than 20% of the cells in your contingency table should have an expected frequency of less than 5. If this assumption is violated, you may need to use an alternative like Fisher's Exact Test.
+
+------
+
+
+
+### 11.3 How to Run the Test in Python
+
+
+
+To perform a chi-square test in Python, we'll use the `scipy.stats` library. The primary function we'll use is `chi2_contingency`.
+
+First, you need to create a **contingency table** (a cross-tabulation of your two categorical variables) using the `pandas` library.
+
+Python
+
+```
+import pandas as pd
+from scipy.stats import chi2_contingency
+
+# Assuming you have a DataFrame named 'df' with your data
+# Let's create a contingency table of 'gender' and 'school_type'
+contingency_table = pd.crosstab(df['gender'], df['school_type'])
+
+# Now, run the chi-square test
+chi2, p, dof, expected = chi2_contingency(contingency_table)
+
+# Print the results
+print(f"Chi-square statistic: {chi2}")
+print(f"P-value: {p}")
+print(f"Degrees of freedom: {dof}")
+print("Expected frequencies table:\n", expected)
+```
+
+The function returns four values:
+
+1. **`chi2`**: The chi-square test statistic.
+2. **`p`**: The p-value.
+3. **`dof`**: The degrees of freedom.
+4. **`expected`**: An array of the expected frequencies.
+
+------
+
+
+
+### 11.4 A Fully Worked Solution: Teacher Absenteeism in a fictional Sub-Saharan African Country
+
+
+
+**Scenario:** We want to investigate if there is a relationship between a teacher's gender and their attendance record in a fictional country, 'Kalaharia'. We have data from the Ministry of Education, classifying teachers as having either 'High Attendance' or 'Low Attendance'.
+
+**Data:** We have a fictitious dataset `teachers.csv` with columns for `teacher_id`, `gender` (`Male`, `Female`), and `attendance_status` (`High`, `Low`).
+
+**Identifying Why You'd Use This Test:** We're dealing with two categorical variables (`gender` and `attendance_status`) and we want to see if they are independent or if there is a statistically significant association between them. This is the perfect use case for a chi-square test of independence.
+
+**How to Run the Test:**
+
+First, we'll load the data and create a contingency table.
+
+Python
+
+```
+import pandas as pd
+from scipy.stats import chi2_contingency
+
+# Load the fictional dataset
+# This is a sample DataFrame to simulate the data
+data = {'gender': ['Male', 'Female', 'Male', 'Female', 'Male', 'Male', 'Female', 'Female', 'Male', 'Female'],
+        'attendance_status': ['High', 'High', 'Low', 'High', 'Low', 'High', 'High', 'Low', 'High', 'Low']}
+teachers_df = pd.DataFrame(data)
+
+# Create the contingency table
+attendance_table = pd.crosstab(teachers_df['gender'], teachers_df['attendance_status'])
+print("Contingency Table:")
+print(attendance_table)
+
+# Run the chi-square test
+chi2, p_value, dof, expected = chi2_contingency(attendance_table)
+
+# Print the results
+print("\nChi-Square Test Results:")
+print(f"Chi-square statistic: {chi2:.2f}")
+print(f"P-value: {p_value:.4f}")
+print(f"Degrees of freedom: {dof}")
+print("Expected Frequencies:")
+print(pd.DataFrame(expected, columns=attendance_table.columns, index=attendance_table.index))
+```
+
+**Interpreting the Result:**
+
+Let's assume the code output is:
+
+```
+Contingency Table:
+attendance_status  High  Low
+gender
+Female                3    2
+Male                  3    2
+
+Chi-Square Test Results:
+Chi-square statistic: 0.00
+P-value: 1.0000
+Degrees of freedom: 1
+Expected Frequencies:
+attendance_status  High  Low
+gender
+Female              2.5  2.5
+Male                2.5  2.5
+```
+
+The **p-value is 1.0000**, which is much greater than our standard significance level of 0.05. This means we **fail to reject the null hypothesis**. Based on this (fictional) dataset, there is **no statistically significant relationship** between a teacher's gender and their attendance status. The small differences we see in the observed counts (3 vs. 2 for both males and females) are likely due to random chance. The expected frequencies show us that if there were no relationship, we would expect to see 2.5 teachers in each category, which is very close to our observed data.
+
+------
+
+
+
+### 11.5 Your Turn: Student School Access in a Fictional Country
+
+
+
+**Scenario:** A recent study in the fictional country of 'Zambezia' examined the relationship between a household's proximity to a school and whether their children enrolled. The data is available as `zambezia_enrollment.csv` with the following columns:
+
+- `location`: 'Rural' or 'Urban'
+- `enrollment_status`: 'Enrolled' or 'Not Enrolled'
+
+**Question:** Is there a statistically significant association between a student's location (rural/urban) and their enrollment status?
+
+Run a chi-square test on this data and determine the correct conclusion.
+
+A. The p-value is less than 0.05, so there is a significant relationship between location and enrollment.
+
+B. The p-value is greater than 0.05, so there is no significant relationship between location and enrollment.
+
+C. The chi-square statistic is 0, so there is no relationship between location and enrollment.
+
+D. The test cannot be run as the data is not normally distributed.
+
+**Please choose one of the options above. Once you've made your choice, I will provide the analysis.**
+
+------
+
+
+
+### 11.6 Run Your Own Analysis
+
+
+
+**Scenario:** Do you have your own dataset you'd like to analyze? Maybe you're working with data on student performance from a specific region, or survey data about parental engagement.
+
+**Prompt:** Upload your dataset (in CSV format) and tell me which two categorical variables you'd like to test for a relationship. I will help you run the chi-square test and walk you through interpreting the results.

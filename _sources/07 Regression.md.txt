@@ -1,0 +1,195 @@
+# **07 Analyzing Relationships: Correlation**
+
+So far, we've focused on comparing group means. But what if you want to know if two variables are simply related to each other? For instance, does an increase in one variable tend to correspond with an increase in another? This is the domain of **correlation analysis**.
+
+
+
+------
+
+
+
+#### **7.1 Understanding Correlation**
+
+Correlation measures the **strength and direction of a linear relationship between two continuous variables**. It tells you how closely the data points in a scatter plot fit a straight line. It's important to remember that **correlation does not imply causation**. Just because two variables are related doesn't mean one causes the other. There might be a third, unobserved variable at play.
+
+*Educational Examples:*
+
+- Is there a relationship between a student's attendance rate and their final exam score?
+- Does a higher student-to-teacher ratio correlate with lower standardized test scores?
+- Is there a relationship between a school's per-pupil spending and its graduation rate?
+
+The relationship can be either **positive** or **negative**:
+
+- **Positive Correlation:** As one variable increases, the other variable also tends to increase.
+
+[Image of a scatter plot with a positive correlation](https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQwRqaNA9PgjZzxb7nMEJaT-PYhM4KSMxWjEpwUV73RxVP4V68lfQcNP9WvlH_0mgyZN9maNaYir6YAkY0xP-Ie7cLqv1QaRtN1_BzZE0IKTE-GeKs)
+
+- **Negative Correlation:** As one variable increases, the other variable tends to decrease.
+
+[Image of a scatter plot with a negative correlation](https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcTooqOPcPhGF3jV2Ggcwl5YTDelA8a9Tb3xnVqVTVZ5Y7ZLlLP5ZdVKhq038rMtxlm3QgsqUU9xK9uKdiD-K2eypBhMmG9QRqluZ6ruxMIypBUjt7Q)
+
+- **No Correlation:** There is no discernible linear relationship between the two variables.
+
+[Image of a scatter plot with no correlation](https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRl4dIlD90FZrtk5Zb7yyAk5v9brUJCuPV1bCpbRoDxGg6VuDrqSEom2HXtP5hFMNXhRsxVDnLkE9u3gXPVIxfFtaWPMROHwjh9mdNuPV3Bn1ZWIEw)
+
+------
+
+
+
+#### **7.2 Interpreting the Correlation Coefficient**
+
+The strength and direction of a correlation are measured by the **correlation coefficient**, denoted by *r*. The value of *r* always falls between -1 and +1.
+
+- r=1
+  : Perfect positive linear relationship.
+- r=−1
+  : Perfect negative linear relationship.
+- r=0
+  : No linear relationship.
+- 0.7≤∣r∣≤1
+  : Strong relationship.
+- 0.3≤∣r∣<0.7
+  : Moderate relationship.
+- 0<∣r∣<0.3
+  : Weak relationship.
+
+When interpreting a correlation, you should always visualize the data with a scatter plot first. This helps you identify non-linear relationships or potential outliers that could distort the correlation coefficient.
+
+
+
+------
+
+
+
+#### **7.3 Calculating Correlation in Python**
+
+The pandas library makes calculating the correlation coefficient straightforward. We'll use the .corr() method on our DataFrame.
+
+Python
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+\# Fictional data: Student attendance rates and final exam scores
+data = {
+  'Attendance_Rate': [0.95, 0.88, 0.99, 0.75, 0.92, 0.85, 0.90, 0.80],
+  'Final_Exam_Score': [90, 82, 95, 65, 88, 78, 85, 70]
+}
+df = pd.DataFrame(data)
+
+\# Create a scatter plot to visualize the relationship
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x='Attendance_Rate', y='Final_Exam_Score', data=df)
+plt.title('Attendance Rate vs. Final Exam Score')
+plt.show()
+
+\# Calculate the correlation coefficient
+correlation = df['Attendance_Rate'].corr(df['Final_Exam_Score'])
+print(f"The correlation coefficient (r) is: {correlation:.2f}")
+
+\# Interpret the result
+if correlation > 0.7:
+  print("Interpretation: There is a strong positive correlation.")
+elif correlation > 0.3:
+  print("Interpretation: There is a moderate positive correlation.")
+else:
+  print("Interpretation: The relationship is weak.")
+
+
+
+In this example, we'd likely find a strong positive correlation, suggesting that students with higher attendance rates tend to have higher final exam scores.
+
+
+
+------
+
+
+
+#### **7.4 Fully Worked Solution: Analyzing Teacher Experience and Student Performance in Ethiopia**
+
+Let's use a fictitious dataset from the Ethiopian Ministry of Education. We want to investigate the relationship between the years of experience a teacher has and the average test scores of their students.
+
+**1. The Problem:**
+
+Policymakers want to know if more experienced teachers are associated with better student outcomes. This is a question about the relationship between two continuous, ratio-level variables: Teacher_Experience_Years and Average_Student_Score. Correlation analysis is the perfect tool for this.
+
+**2. The Data:**
+
+Our dataset, ethiopia_schools.csv, contains columns Teacher_Experience_Years and Average_Student_Score.
+
+**3. The Analysis:**
+
+Python
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+\# Load the dataset (fictitious data)
+df = pd.read_csv('ethiopia_schools.csv')
+
+\# Step 1: Visualize the relationship with a scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='Teacher_Experience_Years', y='Average_Student_Score', data=df)
+plt.title('Teacher Experience vs. Average Student Score')
+plt.xlabel('Teacher Experience (Years)')
+plt.ylabel('Average Student Score')
+plt.show()
+
+\# Step 2: Calculate the correlation coefficient
+correlation_coefficient = df['Teacher_Experience_Years'].corr(df['Average_Student_Score'])
+
+\# Step 3: Print the results
+print(f"Correlation Coefficient (r): {correlation_coefficient:.2f}")
+
+
+
+**4. Interpreting the Result:**
+
+Let's assume our Python output is Correlation Coefficient (r): 0.65.
+
+This value, 0.65, is a positive number and falls between 0.3 and 0.7, indicating a **moderate positive correlation**.
+
+**Conclusion:** There is a moderate positive linear relationship between a teacher's years of experience and their students' average test scores. This suggests that, on average, students of more experienced teachers tend to perform better. This finding could be used to inform policies on teacher retention and professional development, though it's critical to remember that this is a correlation, not a causal link. Other factors, such as school resources, could influence both variables.
+
+
+
+------
+
+
+
+#### **7.5 Question for the Reader**
+
+You have a dataset from the Ministry of Education in Senegal that includes information on the number of students per class and the average classroom attendance rate for each school. You calculate the correlation coefficient between these two variables and find it to be -0.82.
+
+**Question:** How should a policy maker interpret this result?
+
+A) Increasing the number of students per class will cause the attendance rate to decrease.
+
+B) There is a very strong negative relationship, meaning that schools with a high number of students per class tend to have a low attendance rate.
+
+C) The relationship is too weak to be meaningful.
+
+D) There is no relationship between the number of students per class and attendance rate.
+
+[Answer: B]
+
+(Analysis: A correlation coefficient of -0.82 is a strong negative value. The negative sign indicates an inverse relationship: as one variable (students per class) increases, the other (attendance rate) tends to decrease. The value of 0.82 (the absolute value) is close to 1, indicating the relationship is strong. Therefore, option B is the correct interpretation. Option A is incorrect because correlation does not imply causation. Options C and D are incorrect because the relationship is strong and discernible.)
+
+
+
+------
+
+
+
+#### **7.6 Your Turn: Analyzing Your Own Data**
+
+Upload a dataset with two continuous variables that you suspect might be related. For instance, you might have data on the number of books in a school library and the school's literacy rate, or the number of computers per student and average test scores.
+
+I'll help you:
+
+- Identify the appropriate columns for your correlation analysis.
+- Run the Python code to calculate the correlation coefficient.
+- Create a scatter plot to visualize the relationship.
+- Interpret the results and discuss the policy implications, while keeping the "correlation is not causation" principle in mind.

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>03 Descriptive Statistics &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="04 The T-test - Comparing Averages" href="04%202%20independent%20groups%20-%20T-test.html" />
+    <link rel="prev" title="02 Python" href="02%20Python%20Intro.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="04%202%20independent%20groups%20-%20T-test.html" title="04 The T-test - Comparing Averages"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="02%20Python%20Intro.html" title="02 Python"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">03 Descriptive Statistics</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="descriptive-statistics">
+<h1>03 Descriptive Statistics<a class="headerlink" href="#descriptive-statistics" title="Link to this heading">¶</a></h1>
+<p><em>What does the data tell us?</em></p>
+<p>Once you’ve loaded your data into Python, the next logical step is to summarize and visualize it. <strong>Descriptive statistics</strong> do exactly that—they describe the main features of a dataset. They don’t allow us to make conclusions beyond the data we have, but they are crucial for understanding the story your data is telling.</p>
+<section id="measures-of-central-tendency-mean-median-mode">
+<h2><strong>3.1 Measures of Central Tendency (Mean, Median, Mode)</strong><a class="headerlink" href="#measures-of-central-tendency-mean-median-mode" title="Link to this heading">¶</a></h2>
+<p>These measures tell us about the “center” or “typical” value of a dataset.</p>
+<ul class="simple">
+<li><p><strong>Mean:</strong> The simple average. You sum all the values and divide by the number of values. It’s the most common measure of central tendency but can be heavily influenced by outliers (extremely high or low values).</p>
+<ul>
+<li><p><em>Educational Example:</em> The average test score for a class.</p></li>
+</ul>
+</li>
+<li><p><strong>Median:</strong> The middle value in a sorted dataset. If you have an even number of values, it’s the average of the two middle numbers. The median is more robust to outliers than the mean.</p>
+<ul>
+<li><p><em>Educational Example:</em> The median salary of teachers in a district. If a few very highly paid administrators are included, the mean salary might be skewed, but the median would remain a better representation of the typical teacher’s salary.</p></li>
+</ul>
+</li>
+<li><p><strong>Mode:</strong> The value that appears most frequently in a dataset. It’s the only measure of central tendency that can be used with <strong>Nominal</strong> data.</p>
+<ul>
+<li><p><em>Educational Example:</em> The most common grade level in a school (e.g., more students are in grade 9 than any other grade).</p></li>
+</ul>
+</li>
+</ul>
+<p>Let’s use Python to calculate these measures on our fictional student data.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Load our student data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Student_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;S001&#39;</span><span class="p">,</span> <span class="s1">&#39;S002&#39;</span><span class="p">,</span> <span class="s1">&#39;S003&#39;</span><span class="p">,</span> <span class="s1">&#39;S004&#39;</span><span class="p">,</span> <span class="s1">&#39;S005&#39;</span><span class="p">,</span> <span class="s1">&#39;S006&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Gender&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Test_Score&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">85</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">95</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Calculate the mean test score</span>
+<span class="n">mean_score</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean Test Score: </span><span class="si">{</span><span class="n">mean_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate the median test score</span>
+<span class="n">median_score</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median Test Score: </span><span class="si">{</span><span class="n">median_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate the mode of the test scores</span>
+<span class="c1"># Note: The .mode() function returns a Series, so we use [0] to get the value</span>
+<span class="n">mode_score</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mode Test Score: </span><span class="si">{</span><span class="n">mode_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="measures-of-variability-standard-deviation-variance-range">
+<h3><strong>3.2 Measures of Variability (Standard Deviation, Variance, Range)</strong><a class="headerlink" href="#measures-of-variability-standard-deviation-variance-range" title="Link to this heading">¶</a></h3>
+<p>These measures tell us about the spread or dispersion of the data. They answer the question: “How much do the data points deviate from the center?”</p>
+<ul class="simple">
+<li><p><strong>Range:</strong> The simplest measure, calculated as the difference between the maximum and minimum values.</p>
+<ul>
+<li><p><em>Educational Example:</em> The range of student ages in a classroom, from the youngest to the oldest.</p></li>
+</ul>
+</li>
+<li><p><strong>Variance:</strong> The average of the squared differences from the mean. It’s useful mathematically but can be hard to interpret because the units are squared.</p></li>
+<li><p><strong>Standard Deviation:</strong> The square root of the variance. It’s the most common and intuitive measure of variability because it’s in the same units as the original data. A small standard deviation means the data points are clustered closely around the mean, while a large standard deviation means they are more spread out.</p>
+<ul>
+<li><p><em>Educational Example:</em> Comparing the standard deviation of test scores between two schools. A school with a smaller standard deviation has more consistent student performance, while a school with a larger one has a wider range of high and low performers.</p></li>
+</ul>
+</li>
+</ul>
+<p>Let’s compute these with Python.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the range</span>
+<span class="n">score_range</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Range of Test Scores: </span><span class="si">{</span><span class="n">score_range</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate the variance</span>
+<span class="n">variance_score</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Variance of Test Scores: </span><span class="si">{</span><span class="n">variance_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate the standard deviation</span>
+<span class="n">std_dev_score</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Deviation of Test Scores: </span><span class="si">{</span><span class="n">std_dev_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="visualizing-educational-data-histograms-bar-charts-box-plots">
+<h3><strong>3.3 Visualizing Educational Data (Histograms, Bar Charts, Box Plots)</strong><a class="headerlink" href="#visualizing-educational-data-histograms-bar-charts-box-plots" title="Link to this heading">¶</a></h3>
+<p>Graphs are powerful. They can reveal patterns and insights that numbers alone might hide. Python’s <strong>Matplotlib</strong> and <strong>Seaborn</strong> libraries are excellent for creating professional visualizations.</p>
+<ul class="simple">
+<li><p><strong>Histograms:</strong> Show the distribution of a single numerical variable. They group data into bins and show the frequency of each bin.</p>
+<ul>
+<li><p><em>Educational Example:</em> A histogram of student test scores can quickly show if the scores are normally distributed (a bell curve) or if they are skewed to one side.</p></li>
+</ul>
+</li>
+<li><p><strong>Bar Charts:</strong> Used to compare categorical data. The height of each bar represents the frequency or a summary statistic for that category.</p>
+<ul>
+<li><p><em>Educational Example:</em> A bar chart showing the number of students enrolled in different subjects (e.g., Science, Arts, Humanities).</p></li>
+</ul>
+</li>
+<li><p><strong>Box Plots:</strong> A great way to visualize the distribution of a numerical variable and to identify outliers. They show the median, the quartiles, and the range of the data.</p>
+<ul>
+<li><p><em>Educational Example:</em> A box plot comparing the distribution of test scores between male and female students can quickly show differences in medians and spread.</p></li>
+</ul>
+</li>
+</ul>
+<p>Let’s create a histogram and a box plot using Python.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="c1"># Create a figure and axis object</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Create a histogram of test scores</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">],</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribution of Test Scores&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Test Score&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a box plot to visualize the same data and identify outliers</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Box Plot of Test Scores&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Test Score&#39;</span><span class="p">)</span>
+
+<span class="c1"># Display the plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The combination of descriptive statistics and data visualizations provides a comprehensive first look at your data. Before you move on to more complex inferential tests, always take the time to understand the basic story your data is telling you. This will help you formulate better hypotheses and interpret your results more accurately.</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">03 Descriptive Statistics</a><ul>
+<li><a class="reference internal" href="#measures-of-central-tendency-mean-median-mode"><strong>3.1 Measures of Central Tendency (Mean, Median, Mode)</strong></a><ul>
+<li><a class="reference internal" href="#measures-of-variability-standard-deviation-variance-range"><strong>3.2 Measures of Variability (Standard Deviation, Variance, Range)</strong></a></li>
+<li><a class="reference internal" href="#visualizing-educational-data-histograms-bar-charts-box-plots"><strong>3.3 Visualizing Educational Data (Histograms, Bar Charts, Box Plots)</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="02%20Python%20Intro.html"
+                          title="previous chapter">02 Python</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="04%202%20independent%20groups%20-%20T-test.html"
+                          title="next chapter">04 The T-test - Comparing Averages</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/03 Descriptive Stats.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="04%202%20independent%20groups%20-%20T-test.html" title="04 The T-test - Comparing Averages"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="02%20Python%20Intro.html" title="02 Python"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">03 Descriptive Statistics</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

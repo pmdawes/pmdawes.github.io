@@ -1,0 +1,213 @@
+# 09 The Power of Location: Geospatial Analysis of Educational Data
+
+
+
+Up to this point, our data analysis has been largely "aspatial"—we've focused on numbers and categories, but we haven't considered where our data points are located. In educational policy, however, location is often a critical factor. Where a school is situated, its proximity to other schools, or its relationship to population centers can tell us a great deal about equity, access, and resource distribution. **Geospatial analysis** allows us to leverage this locational data to create powerful, insightful maps and to uncover spatial patterns.
+
+------
+
+
+
+#### **9.1 Mapping School Locations and Student Demographics**
+
+
+
+The first step in any geospatial analysis is to represent your data on a map. This requires two things: a dataset with geographic coordinates (latitude and longitude) and a Python library capable of handling spatial data. **Geopandas** is the go-to library for this task, as it extends the power of Pandas to include geographic data types.
+
+Let's imagine we have a dataset from the Ministry of Education in a fictional country, detailing the locations of all its primary schools. We can plot these schools on a map to visualize their distribution.
+
+*Educational Example:* We can create a map showing the locations of schools and color-code the points based on a variable like `School_Type` (e.g., public vs. private) or `Rural_Urban_Status`. This simple visualization can immediately reveal patterns, such as a concentration of private schools in urban areas or a lack of schools in a particular region.
+
+**How to do it in Python:**
+
+First, you need to import the necessary libraries. Geopandas relies on `geopandas` and often `matplotlib` for plotting.
+
+Python
+
+```
+import pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
+
+# Fictional school data with latitude and longitude
+data = {
+    'School_ID': ['S1', 'S2', 'S3', 'S4', 'S5'],
+    'Latitude': [-4.05, -4.0, -4.01, -3.95, -4.1],
+    'Longitude': [39.66, 39.7, 39.68, 39.65, 39.69],
+    'Enrollment': [1200, 850, 600, 1500, 700]
+}
+df = pd.DataFrame(data)
+
+# Step 1: Create a GeoDataFrame from the DataFrame
+# We need to specify the coordinates and a Coordinate Reference System (CRS)
+# CRS 4326 is the standard for latitude/longitude
+gdf = gpd.GeoDataFrame(
+    df, geometry=gpd.points_from_xy(df.Longitude, df.Latitude), crs="EPSG:4326"
+)
+
+# Step 2: Load a base map (e.g., a shapefile of the country)
+# For this example, we will create a simple placeholder map
+world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+africa = world[world.continent == 'Africa']
+
+# Step 3: Plot the map
+fig, ax = plt.subplots(figsize=(10, 10))
+africa.plot(ax=ax, color='lightgrey', edgecolor='black')
+gdf.plot(ax=ax, markersize=50, color='blue')
+
+ax.set_title('Distribution of Primary Schools')
+plt.show()
+```
+
+------
+
+
+
+#### **9.2 Analyzing Spatial Patterns in Test Scores and Enrollment**
+
+
+
+Beyond simple mapping, geospatial analysis allows us to ask more complex questions:
+
+- Are schools with higher test scores clustered together in specific areas?
+- Are there "cold spots" of low enrollment that correspond to areas with a high percentage of out-of-school children?
+- Is a new school being built in a location that will effectively serve an underserved population?
+
+Spatial analysis techniques can help us answer these questions. For example, **kernel density estimation** can create a "heat map" of school distribution, highlighting areas with a high concentration of schools. **Spatial autocorrelation** (e.g., Moran's I) can tell us if a variable, like a test score, is spatially clustered. This would mean that schools with high scores are located near other schools with high scores.
+
+*Educational Example:* A policy analyst in Uganda wants to see if high-performing schools are clustered in specific regions. Using spatial autocorrelation, they can confirm whether student performance is spatially dependent. If it is, this could suggest that factors like regional resource allocation or local economic conditions have a widespread impact on educational outcomes, rather than being isolated to individual schools.
+
+**How to do it in Python:**
+
+We'll use a more advanced library called **PySAL** (Python Spatial Analysis Library) for this.
+
+Python
+
+```
+import pandas as pd
+import geopandas as gpd
+from libpysal.weights import lat2W
+from esda.moran import Moran
+
+# Fictional data with school locations and average test scores
+data = {
+    'School_ID': range(1, 11),
+    'Latitude': [1.5, 1.6, 1.7, 1.8, 1.55, 1.65, 1.75, 1.85, 1.7, 1.8],
+    'Longitude': [32.5, 32.6, 32.7, 32.8, 32.55, 32.65, 32.75, 32.85, 32.6, 32.7],
+    'Avg_Test_Score': [75, 80, 85, 90, 78, 83, 88, 92, 80, 85]
+}
+df = pd.DataFrame(data)
+
+# Create a GeoDataFrame
+gdf = gpd.GeoDataFrame(
+    df, geometry=gpd.points_from_xy(df.Longitude, df.Latitude), crs="EPSG:4326"
+)
+
+# Step 1: Create a spatial weights matrix (defines what "neighbor" means)
+# We'll use a k-nearest neighbors approach
+w = lat2W(gdf.geometry, k=4)
+
+# Step 2: Perform the Moran's I test for spatial autocorrelation
+moran_test = Moran(gdf['Avg_Test_Score'], w)
+
+print(f"Moran's I Statistic: {moran_test.I:.2f}")
+print(f"P-value: {moran_test.p_sim:.3f}")
+```
+
+**Interpretation:** The **Moran's I** statistic ranges from -1 to 1. A positive value indicates clustering (high values are near high values, low values are near low values), while a negative value indicates dispersion (high values are near low values). The p-value tells us if this clustering is statistically significant. If the p-value is less than 0.05, we can conclude that there is significant spatial autocorrelation.
+
+------
+
+
+
+#### **9.3 Fully Worked Solution: Analyzing Access to Education in Nigeria**
+
+
+
+A government agency in Nigeria wants to assess the geographical access to primary education. They have a dataset of primary school locations and are planning to build new schools to improve access. They want to identify which areas have the fewest schools and could benefit most from new construction.
+
+**1. The Problem:** We need to find "school deserts" or areas with low school density. A simple way to visualize this is by creating a kernel density map, which will show us the concentration of schools across the country.
+
+**2. The Data:** Our dataset, `nigeria_schools_geo.csv`, contains columns `Latitude` and `Longitude`.
+
+**3. The Analysis:**
+
+Python
+
+```
+import pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset (fictitious data)
+df = pd.read_csv('nigeria_schools_geo.csv')
+
+# Create a GeoDataFrame
+gdf = gpd.GeoDataFrame(
+    df, geometry=gpd.points_from_xy(df.Longitude, df.Latitude), crs="EPSG:4326"
+)
+
+# Create a base map of Nigeria (fictional shapefile)
+# In a real-world scenario, you would load a proper shapefile of Nigeria's states or boundaries
+nigeria_map = gpd.read_file('nigeria_boundaries.shp')
+
+# Step 1: Create a heatmap of school density
+fig, ax = plt.subplots(figsize=(12, 12))
+nigeria_map.plot(ax=ax, color='lightgrey', edgecolor='black')
+sns.kdeplot(
+    x=gdf.geometry.x,
+    y=gdf.geometry.y,
+    fill=True,
+    cmap='viridis',
+    ax=ax,
+    levels=10
+)
+
+gdf.plot(ax=ax, markersize=5, color='red', alpha=0.5)
+ax.set_title('Kernel Density Map of School Locations in Nigeria')
+plt.show()
+```
+
+**4. Interpreting the Result:** The resulting map will show areas of high and low school density. The "hotspots" (darker colors) indicate areas where schools are concentrated, while the "cold spots" (lighter colors) show areas that are underserved. Policy makers can use this visual information to prioritize locations for building new schools, ensuring more equitable access to education.
+
+------
+
+
+
+#### **9.4 Question for the Reader**
+
+
+
+You are a data analyst for a ministry in Ghana, and you have a dataset of all public schools with their latitude, longitude, and a variable for `Student_Teacher_Ratio`. You perform a spatial analysis and find that the Moran's I statistic for `Student_Teacher_Ratio` is positive and statistically significant.
+
+**Question:** What does this result mean for educational policy in Ghana?
+
+A) There is no relationship between a school's location and its student-to-teacher ratio.
+
+B) Schools with high student-to-teacher ratios are randomly distributed across the country.
+
+C) Schools with a high student-to-teacher ratio are geographically clustered, and those with a low ratio are also clustered.
+
+D) The student-to-teacher ratio is higher in the north than in the south.
+
+[Answer: C]
+
+(Analysis: A positive and statistically significant Moran's I indicates positive spatial autocorrelation. This means that a variable's values are similar to their neighbors. Therefore, schools with high student-to-teacher ratios are located near other schools with high ratios, and schools with low ratios are near schools with low ratios. This suggests that factors affecting class size are not randomly distributed but are instead tied to specific regions or locations.)
+
+------
+
+
+
+#### **9.5 Your Turn: Analyzing Your Own Data**
+
+
+
+Upload your own dataset with latitude and longitude coordinates and at least one variable of interest (e.g., test scores, student-to-teacher ratio, funding levels).
+
+I'll help you:
+
+- Convert your data to a GeoDataFrame.
+- Create a simple map to visualize your data points.
+- Run a spatial autocorrelation test (Moran's I) to check for clustering.
+- Interpret the results and discuss how location impacts your educational variable.

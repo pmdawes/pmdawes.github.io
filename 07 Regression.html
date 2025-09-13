@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>07 Analyzing Relationships: Correlation &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="08 Predicting Outcomes: Simple and Multiple Linear Regression" href="08%20Multiple%20Linear%20Regression.html" />
+    <link rel="prev" title="11 The Chi-Square Test" href="11%20Chi-Square%20Test.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="08%20Multiple%20Linear%20Regression.html" title="08 Predicting Outcomes: Simple and Multiple Linear Regression"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="11%20Chi-Square%20Test.html" title="11 The Chi-Square Test"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><strong>07 Analyzing Relationships: Correlation</strong></a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="analyzing-relationships-correlation">
+<h1><strong>07 Analyzing Relationships: Correlation</strong><a class="headerlink" href="#analyzing-relationships-correlation" title="Link to this heading">¶</a></h1>
+<p>So far, we’ve focused on comparing group means. But what if you want to know if two variables are simply related to each other? For instance, does an increase in one variable tend to correspond with an increase in another? This is the domain of <strong>correlation analysis</strong>.</p>
+<hr class="docutils" />
+<section id="understanding-correlation">
+<h2><strong>7.1 Understanding Correlation</strong><a class="headerlink" href="#understanding-correlation" title="Link to this heading">¶</a></h2>
+<p>Correlation measures the <strong>strength and direction of a linear relationship between two continuous variables</strong>. It tells you how closely the data points in a scatter plot fit a straight line. It’s important to remember that <strong>correlation does not imply causation</strong>. Just because two variables are related doesn’t mean one causes the other. There might be a third, unobserved variable at play.</p>
+<p><em>Educational Examples:</em></p>
+<ul class="simple">
+<li><p>Is there a relationship between a student’s attendance rate and their final exam score?</p></li>
+<li><p>Does a higher student-to-teacher ratio correlate with lower standardized test scores?</p></li>
+<li><p>Is there a relationship between a school’s per-pupil spending and its graduation rate?</p></li>
+</ul>
+<p>The relationship can be either <strong>positive</strong> or <strong>negative</strong>:</p>
+<ul class="simple">
+<li><p><strong>Positive Correlation:</strong> As one variable increases, the other variable also tends to increase.</p></li>
+</ul>
+<p><a class="reference external" href="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQwRqaNA9PgjZzxb7nMEJaT-PYhM4KSMxWjEpwUV73RxVP4V68lfQcNP9WvlH_0mgyZN9maNaYir6YAkY0xP-Ie7cLqv1QaRtN1_BzZE0IKTE-GeKs">Image of a scatter plot with a positive correlation</a></p>
+<ul class="simple">
+<li><p><strong>Negative Correlation:</strong> As one variable increases, the other variable tends to decrease.</p></li>
+</ul>
+<p><a class="reference external" href="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcTooqOPcPhGF3jV2Ggcwl5YTDelA8a9Tb3xnVqVTVZ5Y7ZLlLP5ZdVKhq038rMtxlm3QgsqUU9xK9uKdiD-K2eypBhMmG9QRqluZ6ruxMIypBUjt7Q">Image of a scatter plot with a negative correlation</a></p>
+<ul class="simple">
+<li><p><strong>No Correlation:</strong> There is no discernible linear relationship between the two variables.</p></li>
+</ul>
+<p><a class="reference external" href="https://encrypted-tbn3.gstatic.com/licensed-image?q=tbn:ANd9GcRl4dIlD90FZrtk5Zb7yyAk5v9brUJCuPV1bCpbRoDxGg6VuDrqSEom2HXtP5hFMNXhRsxVDnLkE9u3gXPVIxfFtaWPMROHwjh9mdNuPV3Bn1ZWIEw">Image of a scatter plot with no correlation</a></p>
+<hr class="docutils" />
+</section>
+<section id="interpreting-the-correlation-coefficient">
+<h2><strong>7.2 Interpreting the Correlation Coefficient</strong><a class="headerlink" href="#interpreting-the-correlation-coefficient" title="Link to this heading">¶</a></h2>
+<p>The strength and direction of a correlation are measured by the <strong>correlation coefficient</strong>, denoted by <em>r</em>. The value of <em>r</em> always falls between -1 and +1.</p>
+<ul class="simple">
+<li><p>r=1
+: Perfect positive linear relationship.</p></li>
+<li><p>r=−1
+: Perfect negative linear relationship.</p></li>
+<li><p>r=0
+: No linear relationship.</p></li>
+<li><p>0.7≤∣r∣≤1
+: Strong relationship.</p></li>
+<li><p>0.3≤∣r∣&lt;0.7
+: Moderate relationship.</p></li>
+<li><p>0&lt;∣r∣&lt;0.3
+: Weak relationship.</p></li>
+</ul>
+<p>When interpreting a correlation, you should always visualize the data with a scatter plot first. This helps you identify non-linear relationships or potential outliers that could distort the correlation coefficient.</p>
+<hr class="docutils" />
+</section>
+<section id="calculating-correlation-in-python">
+<h2><strong>7.3 Calculating Correlation in Python</strong><a class="headerlink" href="#calculating-correlation-in-python" title="Link to this heading">¶</a></h2>
+<p>The pandas library makes calculating the correlation coefficient straightforward. We’ll use the .corr() method on our DataFrame.</p>
+<p>Python</p>
+<p>import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns</p>
+<p># Fictional data: Student attendance rates and final exam scores
+data = {
+‘Attendance_Rate’: [0.95, 0.88, 0.99, 0.75, 0.92, 0.85, 0.90, 0.80],
+‘Final_Exam_Score’: [90, 82, 95, 65, 88, 78, 85, 70]
+}
+df = pd.DataFrame(data)</p>
+<p># Create a scatter plot to visualize the relationship
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x=’Attendance_Rate’, y=’Final_Exam_Score’, data=df)
+plt.title(‘Attendance Rate vs. Final Exam Score’)
+plt.show()</p>
+<p># Calculate the correlation coefficient
+correlation = df[‘Attendance_Rate’].corr(df[‘Final_Exam_Score’])
+print(f”The correlation coefficient (r) is: {correlation:.2f}”)</p>
+<p># Interpret the result
+if correlation &gt; 0.7:
+print(“Interpretation: There is a strong positive correlation.”)
+elif correlation &gt; 0.3:
+print(“Interpretation: There is a moderate positive correlation.”)
+else:
+print(“Interpretation: The relationship is weak.”)</p>
+<p>In this example, we’d likely find a strong positive correlation, suggesting that students with higher attendance rates tend to have higher final exam scores.</p>
+<hr class="docutils" />
+</section>
+<section id="fully-worked-solution-analyzing-teacher-experience-and-student-performance-in-ethiopia">
+<h2><strong>7.4 Fully Worked Solution: Analyzing Teacher Experience and Student Performance in Ethiopia</strong><a class="headerlink" href="#fully-worked-solution-analyzing-teacher-experience-and-student-performance-in-ethiopia" title="Link to this heading">¶</a></h2>
+<p>Let’s use a fictitious dataset from the Ethiopian Ministry of Education. We want to investigate the relationship between the years of experience a teacher has and the average test scores of their students.</p>
+<p><strong>1. The Problem:</strong></p>
+<p>Policymakers want to know if more experienced teachers are associated with better student outcomes. This is a question about the relationship between two continuous, ratio-level variables: Teacher_Experience_Years and Average_Student_Score. Correlation analysis is the perfect tool for this.</p>
+<p><strong>2. The Data:</strong></p>
+<p>Our dataset, ethiopia_schools.csv, contains columns Teacher_Experience_Years and Average_Student_Score.</p>
+<p><strong>3. The Analysis:</strong></p>
+<p>Python</p>
+<p>import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns</p>
+<p># Load the dataset (fictitious data)
+df = pd.read_csv(‘ethiopia_schools.csv’)</p>
+<p># Step 1: Visualize the relationship with a scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=’Teacher_Experience_Years’, y=’Average_Student_Score’, data=df)
+plt.title(‘Teacher Experience vs. Average Student Score’)
+plt.xlabel(‘Teacher Experience (Years)’)
+plt.ylabel(‘Average Student Score’)
+plt.show()</p>
+<p># Step 2: Calculate the correlation coefficient
+correlation_coefficient = df[‘Teacher_Experience_Years’].corr(df[‘Average_Student_Score’])</p>
+<p># Step 3: Print the results
+print(f”Correlation Coefficient (r): {correlation_coefficient:.2f}”)</p>
+<p><strong>4. Interpreting the Result:</strong></p>
+<p>Let’s assume our Python output is Correlation Coefficient (r): 0.65.</p>
+<p>This value, 0.65, is a positive number and falls between 0.3 and 0.7, indicating a <strong>moderate positive correlation</strong>.</p>
+<p><strong>Conclusion:</strong> There is a moderate positive linear relationship between a teacher’s years of experience and their students’ average test scores. This suggests that, on average, students of more experienced teachers tend to perform better. This finding could be used to inform policies on teacher retention and professional development, though it’s critical to remember that this is a correlation, not a causal link. Other factors, such as school resources, could influence both variables.</p>
+<hr class="docutils" />
+</section>
+<section id="question-for-the-reader">
+<h2><strong>7.5 Question for the Reader</strong><a class="headerlink" href="#question-for-the-reader" title="Link to this heading">¶</a></h2>
+<p>You have a dataset from the Ministry of Education in Senegal that includes information on the number of students per class and the average classroom attendance rate for each school. You calculate the correlation coefficient between these two variables and find it to be -0.82.</p>
+<p><strong>Question:</strong> How should a policy maker interpret this result?</p>
+<p>A) Increasing the number of students per class will cause the attendance rate to decrease.</p>
+<p>B) There is a very strong negative relationship, meaning that schools with a high number of students per class tend to have a low attendance rate.</p>
+<p>C) The relationship is too weak to be meaningful.</p>
+<p>D) There is no relationship between the number of students per class and attendance rate.</p>
+<p>[Answer: B]</p>
+<p>(Analysis: A correlation coefficient of -0.82 is a strong negative value. The negative sign indicates an inverse relationship: as one variable (students per class) increases, the other (attendance rate) tends to decrease. The value of 0.82 (the absolute value) is close to 1, indicating the relationship is strong. Therefore, option B is the correct interpretation. Option A is incorrect because correlation does not imply causation. Options C and D are incorrect because the relationship is strong and discernible.)</p>
+<hr class="docutils" />
+</section>
+<section id="your-turn-analyzing-your-own-data">
+<h2><strong>7.6 Your Turn: Analyzing Your Own Data</strong><a class="headerlink" href="#your-turn-analyzing-your-own-data" title="Link to this heading">¶</a></h2>
+<p>Upload a dataset with two continuous variables that you suspect might be related. For instance, you might have data on the number of books in a school library and the school’s literacy rate, or the number of computers per student and average test scores.</p>
+<p>I’ll help you:</p>
+<ul class="simple">
+<li><p>Identify the appropriate columns for your correlation analysis.</p></li>
+<li><p>Run the Python code to calculate the correlation coefficient.</p></li>
+<li><p>Create a scatter plot to visualize the relationship.</p></li>
+<li><p>Interpret the results and discuss the policy implications, while keeping the “correlation is not causation” principle in mind.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#"><strong>07 Analyzing Relationships: Correlation</strong></a><ul>
+<li><a class="reference internal" href="#understanding-correlation"><strong>7.1 Understanding Correlation</strong></a></li>
+<li><a class="reference internal" href="#interpreting-the-correlation-coefficient"><strong>7.2 Interpreting the Correlation Coefficient</strong></a></li>
+<li><a class="reference internal" href="#calculating-correlation-in-python"><strong>7.3 Calculating Correlation in Python</strong></a></li>
+<li><a class="reference internal" href="#fully-worked-solution-analyzing-teacher-experience-and-student-performance-in-ethiopia"><strong>7.4 Fully Worked Solution: Analyzing Teacher Experience and Student Performance in Ethiopia</strong></a></li>
+<li><a class="reference internal" href="#question-for-the-reader"><strong>7.5 Question for the Reader</strong></a></li>
+<li><a class="reference internal" href="#your-turn-analyzing-your-own-data"><strong>7.6 Your Turn: Analyzing Your Own Data</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="11%20Chi-Square%20Test.html"
+                          title="previous chapter">11 The Chi-Square Test</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="08%20Multiple%20Linear%20Regression.html"
+                          title="next chapter">08 Predicting Outcomes: Simple and Multiple Linear Regression</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/07 Regression.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="08%20Multiple%20Linear%20Regression.html" title="08 Predicting Outcomes: Simple and Multiple Linear Regression"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="11%20Chi-Square%20Test.html" title="11 The Chi-Square Test"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href=""><strong>07 Analyzing Relationships: Correlation</strong></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

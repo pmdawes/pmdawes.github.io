@@ -1,0 +1,159 @@
+# 02 Python
+
+
+
+Now that we understand the language of data, it’s time to learn how to speak with it using a powerful tool: Python. This chapter will get you set up and comfortable with the basics of using Python for data analysis, focusing on the libraries that will become your best friends on this journey.
+
+
+
+### **2.1 Setting Up Your Python Environment**
+
+
+
+The easiest way to get started with Python for data analysis is to install **Anaconda**. It's a free, open-source distribution that comes with Python and all the essential libraries we’ll need pre-installed, like **Pandas**, **NumPy**, and **Matplotlib**. It also includes **Jupyter Notebook**, which is the ideal environment for writing and running our code.
+
+- **Step 1: Download Anaconda.** Go to the official Anaconda website and download the installer for your operating system.
+- **Step 2: Install Anaconda.** Follow the installation prompts. It's a straightforward process, and you can generally accept the default settings.
+- **Step 3: Launch Jupyter Notebook.** Once installed, you can find "Jupyter Notebook" in your applications menu. Launching it will open a browser window, which is your workspace for creating and running code.
+
+
+
+### **2.2 The Basics of Python: Variables, Data Structures, and Functions**
+
+
+
+Python is known for its readability. Here are a few fundamental concepts you'll encounter.
+
+- **Variables:** Think of a variable as a labeled container for a value. You can store numbers, text, or more complex data in them.
+
+  Python
+
+  ```
+  # A variable to store the number of students
+  number_of_students = 500
+  
+  # A variable to store a school's name
+  school_name = "Kibera High School"
+  ```
+
+- **Data Structures:** These are ways to organize and store collections of data.
+
+  - **Lists:** Ordered, changeable collections. Good for storing a sequence of items.
+
+  Python
+
+  ```
+  # A list of student test scores
+  math_scores = [78, 85, 92, 65, 88]
+  ```
+
+  - **Dictionaries:** Unordered collections of "key-value" pairs. Perfect for storing information about a single entity, like a student.
+
+  Python
+
+  ```
+  # A dictionary for a student's profile
+  student_profile = {
+      "student_id": "ST101",
+      "grade_level": 9,
+      "attendance_rate": 0.95
+  }
+  ```
+
+- **Functions:** A block of organized, reusable code that performs a single, related action.
+
+  Python
+
+  ```
+  def calculate_average(scores):
+      """This function calculates the average of a list of scores."""
+      total_score = sum(scores)
+      count = len(scores)
+      average = total_score / count
+      return average
+  
+  # Using the function
+  average_score = calculate_average(math_scores)
+  print(f"The average math score is: {average_score}")
+  ```
+
+
+
+### **2.3 Introduction to Pandas: DataFrames and Series**
+
+
+
+While native Python is powerful, we need specialized tools for handling large datasets. This is where **Pandas** comes in. Pandas is a library that makes working with structured data fast and easy. Its two main data structures are the **Series** and the **DataFrame**.
+
+- **Series:** A one-dimensional labeled array. You can think of it as a single column from a spreadsheet.
+- **DataFrame:** A two-dimensional labeled data structure with columns of potentially different types. This is the primary tool we will use. It's essentially a table or a spreadsheet in Python.
+
+Let's see how to create a simple DataFrame.
+
+Python
+
+```
+import pandas as pd
+
+# Create a dictionary with our educational data
+data = {
+    'Student_ID': ['S001', 'S002', 'S003', 'S004'],
+    'Gender': ['Female', 'Male', 'Male', 'Female'],
+    'Test_Score': [85, 78, 92, 88],
+    'School': ['School A', 'School B', 'School A', 'School C']
+}
+
+# Create the DataFrame
+df = pd.DataFrame(data)
+
+# Display the DataFrame
+print(df)
+```
+
+**Output:**
+
+```
+  Student_ID  Gender  Test_Score    School
+0       S001  Female          85  School A
+1       S002    Male          78  School B
+2       S003    Male          92  School A
+3       S004  Female          88  School C
+```
+
+As you can see, the DataFrame is a clean, organized table that makes our data easy to read and manipulate.
+
+
+
+### **2.4 Importing and Cleaning Educational Data**
+
+Real-world data is rarely perfect. It often has missing values, typos, or inconsistent formatting. Pandas has excellent tools for handling these issues.
+
+The most common way to import data is from a CSV (Comma-Separated Values) file. Most educational datasets are available in this format.
+
+Python
+
+```
+# Assuming you have a file named 'student_data.csv' in the same folder
+# The first line imports the pandas library and assigns it the alias 'pd'.
+import pandas as pd
+
+# The second line reads the CSV file into a pandas DataFrame.
+df = pd.read_csv('student_data.csv')
+
+# The .head() method shows the first 5 rows of the DataFrame.
+print(df.head())
+```
+
+Once loaded, we can check for common issues.
+
+Python
+
+```
+# Check for missing values
+print(df.isnull().sum())
+
+# Get a summary of the data types and non-null counts
+print(df.info())
+```
+
+Understanding how to import and get a quick look at your data is the first step toward a successful analysis. We'll delve deeper into data cleaning in later chapters, but for now, you have the foundational skills to begin.

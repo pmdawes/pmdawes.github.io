@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>02 Python &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="03 Descriptive Statistics" href="03%20Descriptive%20Stats.html" />
+    <link rel="prev" title="01 Data types" href="01%20Data%20Types.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="03%20Descriptive%20Stats.html" title="03 Descriptive Statistics"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="01%20Data%20Types.html" title="01 Data types"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">02 Python</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="python">
+<h1>02 Python<a class="headerlink" href="#python" title="Link to this heading">¶</a></h1>
+<p>Now that we understand the language of data, it’s time to learn how to speak with it using a powerful tool: Python. This chapter will get you set up and comfortable with the basics of using Python for data analysis, focusing on the libraries that will become your best friends on this journey.</p>
+<section id="setting-up-your-python-environment">
+<h2><strong>2.1 Setting Up Your Python Environment</strong><a class="headerlink" href="#setting-up-your-python-environment" title="Link to this heading">¶</a></h2>
+<p>The easiest way to get started with Python for data analysis is to install <strong>Anaconda</strong>. It’s a free, open-source distribution that comes with Python and all the essential libraries we’ll need pre-installed, like <strong>Pandas</strong>, <strong>NumPy</strong>, and <strong>Matplotlib</strong>. It also includes <strong>Jupyter Notebook</strong>, which is the ideal environment for writing and running our code.</p>
+<ul class="simple">
+<li><p><strong>Step 1: Download Anaconda.</strong> Go to the official Anaconda website and download the installer for your operating system.</p></li>
+<li><p><strong>Step 2: Install Anaconda.</strong> Follow the installation prompts. It’s a straightforward process, and you can generally accept the default settings.</p></li>
+<li><p><strong>Step 3: Launch Jupyter Notebook.</strong> Once installed, you can find “Jupyter Notebook” in your applications menu. Launching it will open a browser window, which is your workspace for creating and running code.</p></li>
+</ul>
+</section>
+<section id="the-basics-of-python-variables-data-structures-and-functions">
+<h2><strong>2.2 The Basics of Python: Variables, Data Structures, and Functions</strong><a class="headerlink" href="#the-basics-of-python-variables-data-structures-and-functions" title="Link to this heading">¶</a></h2>
+<p>Python is known for its readability. Here are a few fundamental concepts you’ll encounter.</p>
+<ul>
+<li><p><strong>Variables:</strong> Think of a variable as a labeled container for a value. You can store numbers, text, or more complex data in them.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A variable to store the number of students</span>
+<span class="n">number_of_students</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="c1"># A variable to store a school&#39;s name</span>
+<span class="n">school_name</span> <span class="o">=</span> <span class="s2">&quot;Kibera High School&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Data Structures:</strong> These are ways to organize and store collections of data.</p>
+<ul class="simple">
+<li><p><strong>Lists:</strong> Ordered, changeable collections. Good for storing a sequence of items.</p></li>
+</ul>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A list of student test scores</span>
+<span class="n">math_scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">78</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">88</span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Dictionaries:</strong> Unordered collections of “key-value” pairs. Perfect for storing information about a single entity, like a student.</p></li>
+</ul>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A dictionary for a student&#39;s profile</span>
+<span class="n">student_profile</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;student_id&quot;</span><span class="p">:</span> <span class="s2">&quot;ST101&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;grade_level&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="s2">&quot;attendance_rate&quot;</span><span class="p">:</span> <span class="mf">0.95</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Functions:</strong> A block of organized, reusable code that performs a single, related action.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_average</span><span class="p">(</span><span class="n">scores</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This function calculates the average of a list of scores.&quot;&quot;&quot;</span>
+    <span class="n">total_score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+    <span class="n">average</span> <span class="o">=</span> <span class="n">total_score</span> <span class="o">/</span> <span class="n">count</span>
+    <span class="k">return</span> <span class="n">average</span>
+
+<span class="c1"># Using the function</span>
+<span class="n">average_score</span> <span class="o">=</span> <span class="n">calculate_average</span><span class="p">(</span><span class="n">math_scores</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The average math score is: </span><span class="si">{</span><span class="n">average_score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="introduction-to-pandas-dataframes-and-series">
+<h2><strong>2.3 Introduction to Pandas: DataFrames and Series</strong><a class="headerlink" href="#introduction-to-pandas-dataframes-and-series" title="Link to this heading">¶</a></h2>
+<p>While native Python is powerful, we need specialized tools for handling large datasets. This is where <strong>Pandas</strong> comes in. Pandas is a library that makes working with structured data fast and easy. Its two main data structures are the <strong>Series</strong> and the <strong>DataFrame</strong>.</p>
+<ul class="simple">
+<li><p><strong>Series:</strong> A one-dimensional labeled array. You can think of it as a single column from a spreadsheet.</p></li>
+<li><p><strong>DataFrame:</strong> A two-dimensional labeled data structure with columns of potentially different types. This is the primary tool we will use. It’s essentially a table or a spreadsheet in Python.</p></li>
+</ul>
+<p>Let’s see how to create a simple DataFrame.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create a dictionary with our educational data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Student_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;S001&#39;</span><span class="p">,</span> <span class="s1">&#39;S002&#39;</span><span class="p">,</span> <span class="s1">&#39;S003&#39;</span><span class="p">,</span> <span class="s1">&#39;S004&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Gender&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Test_Score&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">85</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">88</span><span class="p">],</span>
+    <span class="s1">&#39;School&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;School A&#39;</span><span class="p">,</span> <span class="s1">&#39;School B&#39;</span><span class="p">,</span> <span class="s1">&#39;School A&#39;</span><span class="p">,</span> <span class="s1">&#39;School C&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Create the DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Display the DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">Student_ID</span>  <span class="n">Gender</span>  <span class="n">Test_Score</span>    <span class="n">School</span>
+<span class="mi">0</span>       <span class="n">S001</span>  <span class="n">Female</span>          <span class="mi">85</span>  <span class="n">School</span> <span class="n">A</span>
+<span class="mi">1</span>       <span class="n">S002</span>    <span class="n">Male</span>          <span class="mi">78</span>  <span class="n">School</span> <span class="n">B</span>
+<span class="mi">2</span>       <span class="n">S003</span>    <span class="n">Male</span>          <span class="mi">92</span>  <span class="n">School</span> <span class="n">A</span>
+<span class="mi">3</span>       <span class="n">S004</span>  <span class="n">Female</span>          <span class="mi">88</span>  <span class="n">School</span> <span class="n">C</span>
+</pre></div>
+</div>
+<p>As you can see, the DataFrame is a clean, organized table that makes our data easy to read and manipulate.</p>
+</section>
+<section id="importing-and-cleaning-educational-data">
+<h2><strong>2.4 Importing and Cleaning Educational Data</strong><a class="headerlink" href="#importing-and-cleaning-educational-data" title="Link to this heading">¶</a></h2>
+<p>Real-world data is rarely perfect. It often has missing values, typos, or inconsistent formatting. Pandas has excellent tools for handling these issues.</p>
+<p>The most common way to import data is from a CSV (Comma-Separated Values) file. Most educational datasets are available in this format.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assuming you have a file named &#39;student_data.csv&#39; in the same folder</span>
+<span class="c1"># The first line imports the pandas library and assigns it the alias &#39;pd&#39;.</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># The second line reads the CSV file into a pandas DataFrame.</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;student_data.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># The .head() method shows the first 5 rows of the DataFrame.</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Once loaded, we can check for common issues.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for missing values</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="c1"># Get a summary of the data types and non-null counts</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Understanding how to import and get a quick look at your data is the first step toward a successful analysis. We’ll delve deeper into data cleaning in later chapters, but for now, you have the foundational skills to begin.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">02 Python</a><ul>
+<li><a class="reference internal" href="#setting-up-your-python-environment"><strong>2.1 Setting Up Your Python Environment</strong></a></li>
+<li><a class="reference internal" href="#the-basics-of-python-variables-data-structures-and-functions"><strong>2.2 The Basics of Python: Variables, Data Structures, and Functions</strong></a></li>
+<li><a class="reference internal" href="#introduction-to-pandas-dataframes-and-series"><strong>2.3 Introduction to Pandas: DataFrames and Series</strong></a></li>
+<li><a class="reference internal" href="#importing-and-cleaning-educational-data"><strong>2.4 Importing and Cleaning Educational Data</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="01%20Data%20Types.html"
+                          title="previous chapter">01 Data types</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="03%20Descriptive%20Stats.html"
+                          title="next chapter">03 Descriptive Statistics</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/02 Python Intro.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="03%20Descriptive%20Stats.html" title="03 Descriptive Statistics"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="01%20Data%20Types.html" title="01 Data types"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">02 Python</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

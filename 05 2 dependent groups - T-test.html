@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>05 Comparing Groups: The Paired Samples t-test &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="06 Comparing More Than Two Groups: ANOVA" href="06%20Multiple%20Groups%20ANOVA.html" />
+    <link rel="prev" title="04 The T-test - Comparing Averages" href="04%202%20independent%20groups%20-%20T-test.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="06%20Multiple%20Groups%20ANOVA.html" title="06 Comparing More Than Two Groups: ANOVA"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="04%202%20independent%20groups%20-%20T-test.html" title="04 The T-test - Comparing Averages"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">05 Comparing Groups: The Paired Samples t-test</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="comparing-groups-the-paired-samples-t-test">
+<h1>05 Comparing Groups: The Paired Samples t-test<a class="headerlink" href="#comparing-groups-the-paired-samples-t-test" title="Link to this heading">¶</a></h1>
+<p>In the previous chapter, we learned how to compare the means of two <strong>independent</strong> groups. But what if the groups aren’t independent? What if the same individuals are measured twice? This is where the <strong>paired samples t-test</strong> comes in.</p>
+<hr class="docutils" />
+<section id="when-to-use-a-paired-samples-t-test">
+<h2><strong>5.1 When to Use a Paired Samples t-test</strong><a class="headerlink" href="#when-to-use-a-paired-samples-t-test" title="Link to this heading">¶</a></h2>
+<p>The paired samples t-test, also known as the dependent samples t-test or the repeated measures t-test, is used to determine if there is a statistically significant difference between the means of <strong>two related groups</strong>.</p>
+<p>You would use this test when:</p>
+<ol class="arabic simple">
+<li><p>Your research question involves comparing two measurements taken from the <strong>same individuals, subjects, or items</strong>.</p></li>
+<li><p>Your dependent variable is <strong>Interval</strong> or <strong>Ratio</strong> data.</p></li>
+<li><p>The measurements are paired in some logical way (e.g., pre-test/post-test scores).</p></li>
+</ol>
+<p><em>Educational Examples:</em></p>
+<ul class="simple">
+<li><p>A teacher wants to know if a new math curriculum significantly improved students’ test scores. They give the students a pre-test before the curriculum and a post-test after.</p></li>
+<li><p>A school administrator wants to see if a professional development program for teachers had a significant impact on their reported job satisfaction. They measure job satisfaction before and after the program.</p></li>
+<li><p>A policy analyst is studying a school feeding program and wants to see if students’ attendance rates increased from the term before the program to the term after.</p></li>
+</ul>
+<p>The key here is that the data is <strong>paired</strong>. Each observation in the first group has a direct, one-to-one relationship with an observation in the second group. For example, Student A’s pre-test score is paired with Student A’s post-test score. We are analyzing the <strong>difference</strong> for each pair.</p>
+<hr class="docutils" />
+</section>
+<section id="interpreting-the-results">
+<h2><strong>5.2 Interpreting the Results</strong><a class="headerlink" href="#interpreting-the-results" title="Link to this heading">¶</a></h2>
+<p>The logic is similar to the independent samples t-test, but the hypothesis is slightly different.</p>
+<ul>
+<li><p>Null Hypothesis (</p>
+<p>H0</p>
+<p>): The mean difference between the paired observations is zero. There is no significant change or difference between the two measurements.</p>
+</li>
+<li><p>Alternative Hypothesis (</p>
+<p>H1</p>
+<p>): The mean difference between the paired observations is not zero. There is a significant change or difference.</p>
+</li>
+</ul>
+<p>Again, we look at the <strong>p-value</strong>.</p>
+<ul class="simple">
+<li><p>If the <strong>p-value is less than your significance level (typically 0.05)</strong>, you <strong>reject the null hypothesis</strong>. This indicates that the change or difference between the two measurements is statistically significant and likely not due to random chance.</p></li>
+<li><p>If the <strong>p-value is greater than 0.05</strong>, you <strong>fail to reject the null hypothesis</strong>. You cannot conclude there was a significant change or difference.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="running-a-paired-samples-t-test-in-python">
+<h2><strong>5.3 Running a Paired Samples t-test in Python</strong><a class="headerlink" href="#running-a-paired-samples-t-test-in-python" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> library has a specific function for this, <code class="docutils literal notranslate"><span class="pre">ttest_rel</span></code>, which stands for “t-test for related samples.”</p>
+<p>Let’s use a simple, hypothetical dataset to demonstrate.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="c1"># Fictional data: Pre- and Post-test scores for the same 10 students</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Student_ID&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="s1">&#39;Pre_Test_Score&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">81</span><span class="p">],</span>
+    <span class="s1">&#39;Post_Test_Score&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">83</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Perform the paired samples t-test</span>
+<span class="n">t_statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Pre_Test_Score&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Post_Test_Score&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Paired Samples t-test Results:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t-statistic: </span><span class="si">{</span><span class="n">t_statistic</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Interpret the result</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result: Reject the null hypothesis. There is a significant difference between the means.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result: Fail to reject the null hypothesis. There is no significant difference between the means.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="fully-worked-solution-evaluating-a-teacher-training-program-in-uganda">
+<h2><strong>5.4 Fully Worked Solution: Evaluating a Teacher Training Program in Uganda</strong><a class="headerlink" href="#fully-worked-solution-evaluating-a-teacher-training-program-in-uganda" title="Link to this heading">¶</a></h2>
+<p>Let’s work with a realistic, but fictitious, example from Uganda. The Ministry of Education implemented a new teacher training program focused on interactive teaching methods. To evaluate its effectiveness, they surveyed a sample of teachers before the program and six months after, asking them to rate their confidence in using interactive methods on a scale of 1 to 10. Our goal is to determine if the training program led to a significant increase in confidence.</p>
+<p><strong>1. The Problem:</strong></p>
+<p>We need to compare the mean confidence ratings from the “before” survey to the mean ratings from the “after” survey. Since the data comes from the same group of teachers, this is a perfect case for a paired samples t-test.</p>
+<p><strong>2. The Data:</strong></p>
+<p>Our dataset, <code class="docutils literal notranslate"><span class="pre">uganda_teacher_training.csv</span></code>, contains a column <code class="docutils literal notranslate"><span class="pre">Confidence_Before_Training</span></code> and <code class="docutils literal notranslate"><span class="pre">Confidence_After_Training</span></code>.</p>
+<p><strong>3. The Analysis:</strong></p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="c1"># Load the dataset (fictitious data)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;uganda_teacher_training.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Step 1: Perform the paired samples t-test</span>
+<span class="c1"># The first argument is the &#39;before&#39; data, the second is the &#39;after&#39; data</span>
+<span class="n">t_stat</span><span class="p">,</span> <span class="n">p_val</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Confidence_Before_Training&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Confidence_After_Training&#39;</span><span class="p">])</span>
+
+<span class="c1"># Step 2: Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Paired Samples t-test Results:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t-statistic = </span><span class="si">{</span><span class="n">t_stat</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p-value = </span><span class="si">{</span><span class="n">p_val</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Step 3: Interpret the result</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="k">if</span> <span class="n">p_val</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Interpretation: The p-value is less than 0.05. We reject the null hypothesis.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conclusion: There was a statistically significant increase in teacher confidence after the training program.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Interpretation: The p-value is greater than 0.05. We fail to reject the null hypothesis.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conclusion: The training program did not lead to a statistically significant change in teacher confidence.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>4. Interpreting the Result:</strong></p>
+<p>Let’s assume our Python output is: <code class="docutils literal notranslate"><span class="pre">t-statistic</span> <span class="pre">=</span> <span class="pre">-4.50</span></code>, <code class="docutils literal notranslate"><span class="pre">p-value</span> <span class="pre">=</span> <span class="pre">0.001</span></code>.</p>
+<p>The p-value (0.001) is much less than our significance level of 0.05. Therefore, we <strong>reject the null hypothesis</strong>. The negative t-statistic indicates that the mean of the second group (After) is higher than the first (Before), which makes sense in this context.</p>
+<p><strong>Conclusion:</strong> The teacher training program led to a statistically significant increase in teacher confidence. This finding provides strong evidence to support the program’s effectiveness and could be used to justify its continuation or expansion.</p>
+<hr class="docutils" />
+</section>
+<section id="question-for-the-reader">
+<h2><strong>5.5 Question for the Reader</strong><a class="headerlink" href="#question-for-the-reader" title="Link to this heading">¶</a></h2>
+<p>You are a researcher in Zambia studying a program designed to reduce student absenteeism. You collected data on the number of days absent for a group of students in the term before the program started and the term after.</p>
+<p><strong>Question:</strong> Which of the following is the most appropriate statistical test to determine if the program had a significant effect on student absenteeism?</p>
+<p>A) An independent samples t-test, comparing the mean absences of the “before” group and the “after” group.</p>
+<p>B) A paired samples t-test, comparing the mean absences of each student before and after the program.</p>
+<p>C) An ANOVA, because you are comparing two groups of data points (before and after).</p>
+<p>D) A correlation analysis, to see if the “before” and “after” absence rates are related.</p>
+<p>[Answer: B]</p>
+<p>(Analysis: The data is paired—each student’s “before” absence count is directly linked to their “after” absence count. We are measuring the effect of an intervention on the same group of individuals over time. Therefore, the paired samples t-test is the correct choice. Options A, C, and D are incorrect because they fail to account for the dependent, paired nature of the data.)</p>
+<hr class="docutils" />
+</section>
+<section id="your-turn-analyzing-your-own-data">
+<h2><strong>5.6 Your Turn: Analyzing Your Own Data</strong><a class="headerlink" href="#your-turn-analyzing-your-own-data" title="Link to this heading">¶</a></h2>
+<p>Upload your own dataset that contains paired data (e.g., pre/post measurements, or two related observations from the same subjects). For example, you might have pre-test and post-test scores from a pilot program in your school or district.</p>
+<p>I’ll help you:</p>
+<ul class="simple">
+<li><p>Identify the appropriate columns for your paired samples t-test.</p></li>
+<li><p>Run the Python code to perform the test.</p></li>
+<li><p>Interpret the results and help you formulate a conclusion based on your analysis.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">05 Comparing Groups: The Paired Samples t-test</a><ul>
+<li><a class="reference internal" href="#when-to-use-a-paired-samples-t-test"><strong>5.1 When to Use a Paired Samples t-test</strong></a></li>
+<li><a class="reference internal" href="#interpreting-the-results"><strong>5.2 Interpreting the Results</strong></a></li>
+<li><a class="reference internal" href="#running-a-paired-samples-t-test-in-python"><strong>5.3 Running a Paired Samples t-test in Python</strong></a></li>
+<li><a class="reference internal" href="#fully-worked-solution-evaluating-a-teacher-training-program-in-uganda"><strong>5.4 Fully Worked Solution: Evaluating a Teacher Training Program in Uganda</strong></a></li>
+<li><a class="reference internal" href="#question-for-the-reader"><strong>5.5 Question for the Reader</strong></a></li>
+<li><a class="reference internal" href="#your-turn-analyzing-your-own-data"><strong>5.6 Your Turn: Analyzing Your Own Data</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="04%202%20independent%20groups%20-%20T-test.html"
+                          title="previous chapter">04 The T-test - Comparing Averages</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="06%20Multiple%20Groups%20ANOVA.html"
+                          title="next chapter">06 Comparing More Than Two Groups: ANOVA</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/05 2 dependent groups - T-test.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="06%20Multiple%20Groups%20ANOVA.html" title="06 Comparing More Than Two Groups: ANOVA"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="04%202%20independent%20groups%20-%20T-test.html" title="04 The T-test - Comparing Averages"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">05 Comparing Groups: The Paired Samples t-test</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

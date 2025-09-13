@@ -1,0 +1,100 @@
+## Contents
+
+**Part I: The Foundations of Educational Data Analysis**
+
+- **Chapter 1: The Building Blocks of Data: Data Types and Measurement Scales**
+  
+    - 1.1 [Introduction to Data in Educational Contexts](01 Data Types and Measurement Scales.md)
+      
+    - 1.2 Understanding NOIR: Nominal, Ordinal, Interval, and Ratio Data
+      
+    - 1.3 A Decision Tree for Statistical Tests
+    
+- **Chapter 2: Getting Started with Python for Data Analysis**
+  
+    - 2.1 Setting Up Your Python Environment
+      
+    - 2.2 The Basics of Python: Variables, Data Structures, and Functions
+      
+    - 2.3 Introduction to Pandas: DataFrames and Series
+      
+    - 2.4 Importing and Cleaning Educational Data
+    
+- **Chapter 3: Descriptive Statistics: What Does the Data Tell Us?**
+  
+    - 3.1 Measures of Central Tendency (Mean, Median, Mode)
+      
+    - 3.2 Measures of Variability (Standard Deviation, Variance, Range)
+      
+    - 3.3 Visualizing Educational Data (Histograms, Bar Charts, Box Plots)
+      
+
+**Part II: Inferential Statistics: Testing Hypotheses and Finding Relationships**
+
+- **Chapter 4: Comparing Groups: The Independent Samples t-test**
+  
+    - 4.1 When to Use an Independent Samples t-test
+      
+    - 4.2 Interpreting the Results
+      
+    - 4.3 Running a t-test in Python
+    
+- **Chapter 5: Comparing Groups: The Paired Samples t-test**
+  
+    - 5.1 When to Use a Paired Samples t-test
+      
+    - 5.2 Interpreting the Results
+      
+    - 5.3 Running a Paired Samples t-test in Python
+    
+- **Chapter 6: Comparing More Than Two Groups: ANOVA**
+  
+    - 6.1 When to Use ANOVA
+      
+    - 6.2 Interpreting the Results
+      
+    - 6.3 Running ANOVA in Python
+    
+- **Chapter 7: Analyzing Relationships: Correlation**
+  
+    - 7.1 Understanding Correlation
+      
+    - 7.2 Interpreting the Correlation Coefficient
+      
+    - 7.3 Calculating Correlation in Python
+    
+- **Chapter 8: Predicting Outcomes: Simple and Multiple Linear Regression**
+  
+    - 8.1 The Principles of Linear Regression
+      
+    - 8.2 Simple Linear Regression in Action
+      
+    - 8.3 Multiple Linear Regression for Policy Analysis
+      
+    - 8.4 Running Regression in Python
+      
+
+**Part III: Advanced Topics and Case Studies**
+
+- **Chapter 9: The Power of Location: Geospatial Analysis of Educational Data**
+  
+    - 9.1 Mapping School Locations and Student Demographics
+      
+    - 9.2 Analyzing Spatial Patterns in Test Scores and Enrollment
+    
+- **Chapter 10: Policy-Driven Case Studies**
+  
+    - 10.1 Case Study: Evaluating the Impact of a Teacher Training Program
+      
+    - 10.2 Case Study: Analyzing Enrollment Trends and Projections
+      
+    - 10.3 Case Study: Examining Factors Affecting Student Dropout Rates
+    
+      
+
+**Part IV: Further tests**
+
+**Chapter 11: Chi Square test**
+
+
+![[Pasted image 20250905141001.png]]

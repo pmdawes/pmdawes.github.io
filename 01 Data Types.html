@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>01 Data types &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="02 Python" href="02%20Python%20Intro.html" />
+    <link rel="prev" title="Statistical Analysis of Education for International Development" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="02%20Python%20Intro.html" title="02 Python"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Statistical Analysis of Education for International Development"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">01 Data types</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="data-types">
+<h1>01 Data types<a class="headerlink" href="#data-types" title="Link to this heading">¶</a></h1>
+<section id="introduction-to-data-in-educational-contexts">
+<h2>1.1 Introduction to Data in Educational Contexts<a class="headerlink" href="#introduction-to-data-in-educational-contexts" title="Link to this heading">¶</a></h2>
+<p>In the world of educational policy, we are constantly dealing with data. It might be the number of students enrolled in a district, the attendance rate of a specific school, the average test score in a subject, or the percentage of teachers with advanced degrees. All of these numbers and labels are data points, but they aren’t all the same.</p>
+<p>Understanding the nature of your data is the single most important step before you perform any analysis. It’s the difference between asking the right questions and getting a meaningful answer, and asking a question that your data simply cannot answer. Using the wrong tool on the wrong type of data is like trying to hammer a screw—it will be messy, and you won’t get the result you want.</p>
+</section>
+<section id="understanding-noir-nominal-ordinal-interval-and-ratio-data">
+<h2>1.2 Understanding NOIR: Nominal, Ordinal, Interval, and Ratio Data<a class="headerlink" href="#understanding-noir-nominal-ordinal-interval-and-ratio-data" title="Link to this heading">¶</a></h2>
+<p>To help us categorize data, we use a simple framework known as <strong>NOIR</strong>: <strong>N</strong>ominal, <strong>O</strong>rdinal, <strong>I</strong>nterval, and <strong>R</strong>atio. These four types are the fundamental building blocks of all quantitative data.</p>
+<ul class="simple">
+<li><p><strong>Nominal Data:</strong> This is the simplest type. Nominal data are categories or labels that have no inherent order. Think of them as <strong>names</strong>. You can count how many data points fall into each category, but you can’t perform mathematical operations like addition or subtraction on them. “Male” is not “greater than” or “less than” “Female.”</p></li>
+<li><p><strong>Ordinal Data:</strong> This type of data has a clear order, but the intervals between the values are not consistent or meaningful. Think of a <strong>ranking</strong>. You know that one category is “more” or “better” than another, but you don’t know by how much. For example, a teacher rating of 4 is better than a 3, but the difference between 4 and 3 might not be the same as the difference between 2 and 1.</p></li>
+<li><p><strong>Interval Data:</strong> Interval data has a consistent, meaningful interval between values, but it lacks a true zero point. This means you can add and subtract values, but you can’t perform multiplication or division. A true zero means the complete absence of the thing being measured. For example, an IQ score of 120 is 20 points higher than 100, but a score of 0 does not mean a complete lack of intelligence.</p></li>
+<li><p><strong>Ratio Data:</strong> This is the most informative type of data. It has all the properties of interval data (order and consistent intervals) but also includes a true zero point. This means you can perform all mathematical operations—addition, subtraction, multiplication, and division—and the ratios between values are meaningful. A classroom with 20 students has twice as many as one with 10 because 0 students means the classroom is empty.</p></li>
+</ul>
+<p>Here is a summary table to help you distinguish between the four types of data.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Data Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Key Features</p></th>
+<th class="head"><p>Educational Examples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Nominal</strong></p></td>
+<td><p>Categories with no inherent order. Labels or names.</p></td>
+<td><p>No order, no numeric meaning.</p></td>
+<td><p>Student gender (Male, Female), <br />School district name, <br />Type of school (Public, Private, Charter)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Ordinal</strong></p></td>
+<td><p>Categories with a meaningful order, but inconsistent intervals.</p></td>
+<td><p>Order matters, but the distance between values does not.</p></td>
+<td><p>Teacher satisfaction rating (1-5), <br />School quality rating (A, B, C, D), <br />Academic standing (Freshman, Sophomore, Junior)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Interval</strong></p></td>
+<td><p>Ordered data with consistent, meaningful intervals between values.</p></td>
+<td><p>Consistent intervals, but no true zero point.</p></td>
+<td><p>Standardized test scores (e.g., SAT, GRE),<br />Calendar years</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Ratio</strong></p></td>
+<td><p>Ordered data with consistent intervals and a true zero point.</p></td>
+<td><p>All mathematical operations are possible. A value of zero means absence.</p></td>
+<td><p>Number of students in a class, <br />Teacher salary, <br />Student attendance days,<br />School budget</p></td>
+</tr>
+</tbody>
+</table>
+<p>Getting this right is crucial because it dictates the entire rest of your analysis. Let’s test your understanding.</p>
+<p><strong>Practice Questions: Classifying Educational Data</strong></p>
+<p>For each of the following examples, try to determine which NOIR category it belongs to:</p>
+<ol class="arabic simple">
+<li><p><strong>Student GPA (Grade Point Average)</strong> on a 4.0 scale.</p></li>
+<li><p><strong>Number of teacher professional development hours</strong> completed in a year.</p></li>
+<li><p><strong>School quality rating</strong> of “A,” “B,” “C,” or “D.”</p></li>
+<li><p><strong>Student ID number</strong> in a school’s database.</p></li>
+</ol>
+<p>Take a moment to consider your answers. Once you’re ready, I can tell you if you’re correct and explain why.</p>
+<hr class="docutils" />
+</section>
+<section id="a-decision-tree-for-statistical-tests">
+<h2>1.3 A Decision Tree for Statistical Tests<a class="headerlink" href="#a-decision-tree-for-statistical-tests" title="Link to this heading">¶</a></h2>
+<p>Now that you understand NOIR, we can link it directly to the choice of a statistical test. The data type of your variables is a primary factor in determining which test is appropriate. The following <strong>decision tree</strong> provides a roadmap for selecting the correct test based on your research question and the type of data you have.</p>
+<p>This chart is a powerful roadmap. For instance, if you want to know if there’s a difference in average test scores (a <strong>Ratio/Interval</strong> variable) between male and female students (two independent groups), the tree guides you to the <strong>Independent Samples t-test</strong>. If you want to see if a new teaching method improved student scores before and after the intervention, you would use a <strong>Paired Samples t-test</strong>. The key is to start with your research question and then identify your variables and their NOIR classification to follow the correct path.</p>
+<p>Throughout this book, we will work through each of these decision points, using Python to apply the appropriate statistical test and interpret the results in a way that is meaningful for educational policy.</p>
+<p>Ready to check your answers to the practice questions, or would you like to move on to another topic, perhaps getting started with Python in Chapter 2?</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">01 Data types</a><ul>
+<li><a class="reference internal" href="#introduction-to-data-in-educational-contexts">1.1 Introduction to Data in Educational Contexts</a></li>
+<li><a class="reference internal" href="#understanding-noir-nominal-ordinal-interval-and-ratio-data">1.2 Understanding NOIR: Nominal, Ordinal, Interval, and Ratio Data</a></li>
+<li><a class="reference internal" href="#a-decision-tree-for-statistical-tests">1.3 A Decision Tree for Statistical Tests</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Statistical Analysis of Education for International Development</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="02%20Python%20Intro.html"
+                          title="next chapter">02 Python</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/01 Data Types.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="02%20Python%20Intro.html" title="02 Python"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Statistical Analysis of Education for International Development"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">01 Data types</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

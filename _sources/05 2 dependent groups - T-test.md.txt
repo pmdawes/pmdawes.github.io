@@ -1,0 +1,193 @@
+# 05 Comparing Groups: The Paired Samples t-test
+
+
+
+In the previous chapter, we learned how to compare the means of two **independent** groups. But what if the groups aren't independent? What if the same individuals are measured twice? This is where the **paired samples t-test** comes in.
+
+------
+
+
+
+#### **5.1 When to Use a Paired Samples t-test**
+
+
+
+The paired samples t-test, also known as the dependent samples t-test or the repeated measures t-test, is used to determine if there is a statistically significant difference between the means of **two related groups**.
+
+You would use this test when:
+
+1. Your research question involves comparing two measurements taken from the **same individuals, subjects, or items**.
+2. Your dependent variable is **Interval** or **Ratio** data.
+3. The measurements are paired in some logical way (e.g., pre-test/post-test scores).
+
+*Educational Examples:*
+
+- A teacher wants to know if a new math curriculum significantly improved students' test scores. They give the students a pre-test before the curriculum and a post-test after.
+- A school administrator wants to see if a professional development program for teachers had a significant impact on their reported job satisfaction. They measure job satisfaction before and after the program.
+- A policy analyst is studying a school feeding program and wants to see if students' attendance rates increased from the term before the program to the term after.
+
+The key here is that the data is **paired**. Each observation in the first group has a direct, one-to-one relationship with an observation in the second group. For example, Student A's pre-test score is paired with Student A's post-test score. We are analyzing the **difference** for each pair.
+
+------
+
+
+
+#### **5.2 Interpreting the Results**
+
+
+
+The logic is similar to the independent samples t-test, but the hypothesis is slightly different.
+
+- Null Hypothesis (
+
+  H0
+
+  ): The mean difference between the paired observations is zero. There is no significant change or difference between the two measurements.
+
+- Alternative Hypothesis (
+
+  H1
+
+  ): The mean difference between the paired observations is not zero. There is a significant change or difference.
+
+Again, we look at the **p-value**.
+
+- If the **p-value is less than your significance level (typically 0.05)**, you **reject the null hypothesis**. This indicates that the change or difference between the two measurements is statistically significant and likely not due to random chance.
+- If the **p-value is greater than 0.05**, you **fail to reject the null hypothesis**. You cannot conclude there was a significant change or difference.
+
+------
+
+
+
+#### **5.3 Running a Paired Samples t-test in Python**
+
+
+
+The `scipy.stats` library has a specific function for this, `ttest_rel`, which stands for "t-test for related samples."
+
+Let's use a simple, hypothetical dataset to demonstrate.
+
+Python
+
+```
+import pandas as pd
+from scipy import stats
+
+# Fictional data: Pre- and Post-test scores for the same 10 students
+data = {
+    'Student_ID': range(1, 11),
+    'Pre_Test_Score': [75, 80, 68, 90, 85, 72, 78, 88, 92, 81],
+    'Post_Test_Score': [80, 85, 75, 95, 87, 75, 82, 90, 95, 83]
+}
+df = pd.DataFrame(data)
+
+# Perform the paired samples t-test
+t_statistic, p_value = stats.ttest_rel(df['Pre_Test_Score'], df['Post_Test_Score'])
+
+print(f"Paired Samples t-test Results:")
+print(f"t-statistic: {t_statistic}")
+print(f"p-value: {p_value}")
+
+# Interpret the result
+alpha = 0.05
+if p_value < alpha:
+    print("Result: Reject the null hypothesis. There is a significant difference between the means.")
+else:
+    print("Result: Fail to reject the null hypothesis. There is no significant difference between the means.")
+```
+
+------
+
+
+
+#### **5.4 Fully Worked Solution: Evaluating a Teacher Training Program in Uganda**
+
+
+
+Let's work with a realistic, but fictitious, example from Uganda. The Ministry of Education implemented a new teacher training program focused on interactive teaching methods. To evaluate its effectiveness, they surveyed a sample of teachers before the program and six months after, asking them to rate their confidence in using interactive methods on a scale of 1 to 10. Our goal is to determine if the training program led to a significant increase in confidence.
+
+**1. The Problem:**
+
+We need to compare the mean confidence ratings from the "before" survey to the mean ratings from the "after" survey. Since the data comes from the same group of teachers, this is a perfect case for a paired samples t-test.
+
+**2. The Data:**
+
+Our dataset, `uganda_teacher_training.csv`, contains a column `Confidence_Before_Training` and `Confidence_After_Training`.
+
+**3. The Analysis:**
+
+Python
+
+```
+import pandas as pd
+from scipy import stats
+
+# Load the dataset (fictitious data)
+df = pd.read_csv('uganda_teacher_training.csv')
+
+# Step 1: Perform the paired samples t-test
+# The first argument is the 'before' data, the second is the 'after' data
+t_stat, p_val = stats.ttest_rel(df['Confidence_Before_Training'], df['Confidence_After_Training'])
+
+# Step 2: Print the results
+print(f"Paired Samples t-test Results:")
+print(f"t-statistic = {t_stat:.2f}")
+print(f"p-value = {p_val:.3f}")
+
+# Step 3: Interpret the result
+alpha = 0.05
+if p_val < alpha:
+    print("\nInterpretation: The p-value is less than 0.05. We reject the null hypothesis.")
+    print("Conclusion: There was a statistically significant increase in teacher confidence after the training program.")
+else:
+    print("\nInterpretation: The p-value is greater than 0.05. We fail to reject the null hypothesis.")
+    print("Conclusion: The training program did not lead to a statistically significant change in teacher confidence.")
+```
+
+**4. Interpreting the Result:**
+
+Let's assume our Python output is: `t-statistic = -4.50`, `p-value = 0.001`.
+
+The p-value (0.001) is much less than our significance level of 0.05. Therefore, we **reject the null hypothesis**. The negative t-statistic indicates that the mean of the second group (After) is higher than the first (Before), which makes sense in this context.
+
+**Conclusion:** The teacher training program led to a statistically significant increase in teacher confidence. This finding provides strong evidence to support the program's effectiveness and could be used to justify its continuation or expansion.
+
+------
+
+
+
+#### **5.5 Question for the Reader**
+
+
+
+You are a researcher in Zambia studying a program designed to reduce student absenteeism. You collected data on the number of days absent for a group of students in the term before the program started and the term after.
+
+**Question:** Which of the following is the most appropriate statistical test to determine if the program had a significant effect on student absenteeism?
+
+A) An independent samples t-test, comparing the mean absences of the "before" group and the "after" group.
+
+B) A paired samples t-test, comparing the mean absences of each student before and after the program.
+
+C) An ANOVA, because you are comparing two groups of data points (before and after).
+
+D) A correlation analysis, to see if the "before" and "after" absence rates are related.
+
+[Answer: B]
+
+(Analysis: The data is paired—each student's "before" absence count is directly linked to their "after" absence count. We are measuring the effect of an intervention on the same group of individuals over time. Therefore, the paired samples t-test is the correct choice. Options A, C, and D are incorrect because they fail to account for the dependent, paired nature of the data.)
+
+------
+
+
+
+#### **5.6 Your Turn: Analyzing Your Own Data**
+
+
+
+Upload your own dataset that contains paired data (e.g., pre/post measurements, or two related observations from the same subjects). For example, you might have pre-test and post-test scores from a pilot program in your school or district.
+
+I'll help you:
+
+- Identify the appropriate columns for your paired samples t-test.
+- Run the Python code to perform the test.
+- Interpret the results and help you formulate a conclusion based on your analysis.

@@ -1,0 +1,198 @@
+# 06 Comparing More Than Two Groups: ANOVA
+
+
+
+We've covered how to compare the means of two groups. But what if you have three, four, or even ten groups you want to compare? Running multiple t-tests is not the answer. This approach increases the chance of a "false positive," where you incorrectly conclude a significant difference exists when it doesn't. To solve this problem, we use the **Analysis of Variance (ANOVA)** test.
+
+------
+
+
+
+#### **6.1 When to Use ANOVA**
+
+
+
+ANOVA is a statistical test used to determine if there is a **significant difference between the means of three or more independent groups**.
+
+Think back to our decision tree. You would use this test when:
+
+1. Your research question is about comparing three or more separate, distinct groups.
+2. Your dependent variable (the outcome) is **Interval** or **Ratio** data.
+3. Your independent variable (the grouping variable) is **Nominal** and has three or more categories.
+
+*Educational Examples:*
+
+- Is there a significant difference in the average test scores of students from different grade levels (e.g., Grade 9, Grade 10, Grade 11)?
+- Do teachers in three different regions (e.g., North, Central, South) have significantly different average salaries?
+- Does student attendance vary significantly across different types of schools (e.g., Public, Private, Charter)?
+
+The key insight of ANOVA is that it compares the **variance** between the groups to the **variance** within the groups. If the variance between the groups is much larger than the variance within the groups, it suggests the group means are significantly different.
+
+------
+
+
+
+#### **6.2 Interpreting the Results**
+
+
+
+Similar to the t-test, ANOVA has a null and alternative hypothesis:
+
+- Null Hypothesis (
+
+  H0
+
+  ): The means of all groups are equal. Any observed differences are due to random chance.
+
+- Alternative Hypothesis (
+
+  H1
+
+  ): At least one group mean is significantly different from the others.
+
+ANOVA provides a key statistic called the **F-statistic** and a corresponding **p-value**.
+
+- **F-statistic:** The ratio of the variance between the groups to the variance within the groups. A larger F-statistic suggests a larger difference between group means.
+- **p-value:** The probability of observing the F-statistic you calculated, if the null hypothesis were true.
+- If the **p-value is less than your significance level (typically 0.05)**, you **reject the null hypothesis**. This means there is a significant difference *somewhere* among the group means. However, it doesn't tell you *which* groups are different.
+- If the **p-value is greater than 0.05**, you **fail to reject the null hypothesis**. You cannot conclude there is a significant difference between the means.
+
+When you reject the null hypothesis, you often need to perform a **post-hoc test** (like Tukey's HSD) to find out which specific group pairs are significantly different from each other.
+
+------
+
+
+
+#### **6.3 Running ANOVA in Python**
+
+
+
+We will again use the `scipy.stats` library for a simple one-way ANOVA.
+
+Python
+
+```
+import pandas as pd
+from scipy import stats
+
+# Fictional data: Test scores for students in three different schools
+data = {
+    'School_ID': ['S1', 'S2', 'S3', 'S1', 'S2', 'S3', 'S1', 'S2', 'S3'],
+    'Test_Score': [85, 78, 92, 76, 88, 95, 89, 75, 80]
+}
+df = pd.DataFrame(data)
+
+# Separate the scores into three groups
+school_1_scores = df[df['School_ID'] == 'S1']['Test_Score']
+school_2_scores = df[df['School_ID'] == 'S2']['Test_Score']
+school_3_scores = df[df['School_ID'] == 'S3']['Test_Score']
+
+# Perform the one-way ANOVA test
+f_statistic, p_value = stats.f_oneway(school_1_scores, school_2_scores, school_3_scores)
+
+print(f"ANOVA Results:")
+print(f"F-statistic: {f_statistic}")
+print(f"p-value: {p_value}")
+
+# Interpret the result
+alpha = 0.05
+if p_value < alpha:
+    print("Result: Reject the null hypothesis. At least one school's mean score is significantly different.")
+else:
+    print("Result: Fail to reject the null hypothesis. No significant difference in mean scores across schools.")
+```
+
+------
+
+
+
+#### **6.4 Fully Worked Solution: Analyzing School Enrollment in Nigeria**
+
+
+
+Let's use a fictitious dataset from the Nigerian National Bureau of Statistics to analyze school enrollment. Policymakers are interested in whether there is a significant difference in the average primary school enrollment across Nigeria's three major geopolitical zones: North, South, and Central.
+
+**1. The Problem:**
+
+We need to compare the mean primary school enrollment across three independent groups. This is a classic case for a one-way ANOVA. Our variables are `Geopolitical_Zone` (Nominal, 3 categories) and `Primary_Enrollment` (Ratio).
+
+**2. The Data:**
+
+Our dataset, `nigeria_schools.csv`, contains columns `Geopolitical_Zone` and `Primary_Enrollment`.
+
+**3. The Analysis:**
+
+Python
+
+```
+import pandas as pd
+from scipy import stats
+
+# Load the dataset (fictitious data)
+df = pd.read_csv('nigeria_schools.csv')
+
+# Step 1: Separate the data into groups based on geopolitical zone
+north_enrollment = df[df['Geopolitical_Zone'] == 'North']['Primary_Enrollment']
+south_enrollment = df[df['Geopolitical_Zone'] == 'South']['Primary_Enrollment']
+central_enrollment = df[df['Geopolitical_Zone'] == 'Central']['Primary_Enrollment']
+
+# Step 2: Perform the ANOVA test
+f_stat, p_val = stats.f_oneway(north_enrollment, south_enrollment, central_enrollment)
+
+# Step 3: Print the results
+print(f"ANOVA Results:")
+print(f"F-statistic = {f_stat:.2f}")
+print(f"p-value = {p_val:.3f}")
+
+# Optional: Get descriptive stats to see the group means
+print("\nGroup Means:")
+print(df.groupby('Geopolitical_Zone')['Primary_Enrollment'].mean())
+```
+
+**4. Interpreting the Result:**
+
+Let's assume the output is: `F-statistic = 9.87`, `p-value = 0.000`.
+
+The p-value (0.000) is well below our 0.05 significance level. Therefore, we **reject the null hypothesis**.
+
+**Conclusion:** There is a statistically significant difference in mean primary school enrollment across the three geopolitical zones in Nigeria. To find out which specific zones differ, we would need to run a post-hoc test. The descriptive statistics show the mean enrollment for each zone, which gives us an initial idea of where the differences lie.
+
+------
+
+
+
+#### **6.5 Question for the Reader**
+
+
+
+You are a policy analyst in Ghana studying student performance. You want to see if the average scores on the Basic Education Certificate Examination (BECE) are significantly different among students attending public, private, and community schools.
+
+**Question:** After collecting data from a sample of schools, you should use an ANOVA test. What would you do if your ANOVA test result shows a p-value of 0.02?
+
+A) Conclude that there is no significant difference between any of the school types.
+
+B) Conclude that the mean score of public schools is significantly different from that of private and community schools.
+
+C) Conclude that there is a significant difference in mean scores among the three school types, and then run a post-hoc test to identify which specific groups are different.
+
+D) Conclude that there is a significant difference, but you cannot make any further claims without more data.
+
+[Answer: C]
+
+(Analysis: A p-value of 0.02 is less than 0.05, which means we reject the null hypothesis of equal means. This tells us a significant difference exists somewhere among the three groups. However, ANOVA itself doesn't tell us where that difference is. We need to follow up with a post-hoc test (like Tukey's) to compare the pairs of groups (Public vs. Private, Public vs. Community, Private vs. Community) and pinpoint the source of the difference.)
+
+------
+
+
+
+#### **6.6 Your Turn: Analyzing Your Own Data**
+
+
+
+Upload a dataset that has at least three independent groups and a continuous variable. For example, you might have teacher satisfaction ratings from schools in three different districts, or student-to-teacher ratios from various types of educational institutions.
+
+I'll guide you through:
+
+- Identifying the appropriate columns.
+- Running the ANOVA test in Python.
+- Interpreting the results and discussing the need for post-hoc tests if necessary.

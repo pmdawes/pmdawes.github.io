@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>11 The Chi-Square Test &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="07 Analyzing Relationships: Correlation" href="07%20Regression.html" />
+    <link rel="prev" title="06 Comparing More Than Two Groups: ANOVA" href="06%20Multiple%20Groups%20ANOVA.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="07%20Regression.html" title="07 Analyzing Relationships: Correlation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="06%20Multiple%20Groups%20ANOVA.html" title="06 Comparing More Than Two Groups: ANOVA"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">11 The Chi-Square Test</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="the-chi-square-test">
+<h1>11 The Chi-Square Test<a class="headerlink" href="#the-chi-square-test" title="Link to this heading">¶</a></h1>
+<section id="what-the-chi-square-test-looks-at">
+<h2>11.1 What the Chi-Square Test Looks At<a class="headerlink" href="#what-the-chi-square-test-looks-at" title="Link to this heading">¶</a></h2>
+<p>The <strong>chi-square (chi2) test</strong> is a powerful statistical tool used to analyze categorical data. Unlike the t-tests or ANOVA, which compare means of continuous data, the chi-square test helps us determine if there is a significant association between two <strong>nominal</strong> or <strong>ordinal</strong> variables. In essence, it answers the question: “Are the observed frequencies of a category different from what we would expect by chance?”</p>
+<p>In educational policy, this test is incredibly useful for exploring relationships between variables like:</p>
+<ul class="simple">
+<li><p><strong>Gender and student enrollment in a specific subject:</strong> Is there a relationship between a student’s gender (nominal) and whether they are enrolled in an advanced science class (nominal: Yes/No)?</p></li>
+<li><p><strong>School location and attendance rates:</strong> Is there an association between a school being in a rural or urban area (nominal) and its chronic absenteeism rate (ordinal: Low, Medium, High)?</p></li>
+<li><p><strong>Teacher qualification and school type:</strong> Is a teacher’s highest qualification (ordinal: Bachelor’s, Master’s, PhD) associated with the type of school they work at (nominal: Public, Private, Charter)?</p></li>
+</ul>
+<p>The chi-square test helps us determine if any observed patterns in these relationships are statistically significant or simply due to random variation.</p>
+<hr class="docutils" />
+</section>
+<section id="how-to-interpret-the-results">
+<h2>11.2 How to Interpret the Results<a class="headerlink" href="#how-to-interpret-the-results" title="Link to this heading">¶</a></h2>
+<p>The core of the chi-square test lies in comparing observed frequencies to expected frequencies.</p>
+<ul class="simple">
+<li><p><strong>Observed Frequencies:</strong> The actual counts of how often each combination of categories occurs in your data.</p></li>
+<li><p><strong>Expected Frequencies:</strong> The counts you would expect to see in each combination of categories if there were no relationship between the two variables.</p></li>
+</ul>
+<p>The chi-square statistic itself is a single number that summarizes the difference between these observed and expected counts. A larger chi-square value indicates a greater discrepancy between what you observed and what you would expect, suggesting a stronger relationship between the variables.</p>
+<p>However, the most important value to look at is the <strong>p-value</strong>.</p>
+<ul class="simple">
+<li><p>If the <strong>p-value is less than your significance level</strong> (e.g., $p &lt; 0.05$), you can conclude that there is a <strong>statistically significant association</strong> between the two variables. This means the relationship you observed is likely not due to chance.</p></li>
+<li><p>If the <strong>p-value is greater than your significance level</strong> (p0.05), you <strong>fail to reject the null hypothesis</strong>. This means there is not enough evidence to conclude there is a significant association between the variables.</p></li>
+</ul>
+<p><strong>Assumptions to Check:</strong></p>
+<ul class="simple">
+<li><p><strong>Independence of Observations:</strong> Each observation in your dataset must be independent of the others. For example, one student’s gender shouldn’t influence another’s.</p></li>
+<li><p><strong>Sufficiently Large Sample Size:</strong> The chi-square test performs best with a decent sample size. A common rule of thumb is that no more than 20% of the cells in your contingency table should have an expected frequency of less than 5. If this assumption is violated, you may need to use an alternative like Fisher’s Exact Test.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="how-to-run-the-test-in-python">
+<h2>11.3 How to Run the Test in Python<a class="headerlink" href="#how-to-run-the-test-in-python" title="Link to this heading">¶</a></h2>
+<p>To perform a chi-square test in Python, we’ll use the <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> library. The primary function we’ll use is <code class="docutils literal notranslate"><span class="pre">chi2_contingency</span></code>.</p>
+<p>First, you need to create a <strong>contingency table</strong> (a cross-tabulation of your two categorical variables) using the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> library.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2_contingency</span>
+
+<span class="c1"># Assuming you have a DataFrame named &#39;df&#39; with your data</span>
+<span class="c1"># Let&#39;s create a contingency table of &#39;gender&#39; and &#39;school_type&#39;</span>
+<span class="n">contingency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;school_type&#39;</span><span class="p">])</span>
+
+<span class="c1"># Now, run the chi-square test</span>
+<span class="n">chi2</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">contingency_table</span><span class="p">)</span>
+
+<span class="c1"># Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-square statistic: </span><span class="si">{</span><span class="n">chi2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected frequencies table:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function returns four values:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">chi2</span></code></strong>: The chi-square test statistic.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">p</span></code></strong>: The p-value.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dof</span></code></strong>: The degrees of freedom.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">expected</span></code></strong>: An array of the expected frequencies.</p></li>
+</ol>
+<hr class="docutils" />
+</section>
+<section id="a-fully-worked-solution-teacher-absenteeism-in-a-fictional-sub-saharan-african-country">
+<h2>11.4 A Fully Worked Solution: Teacher Absenteeism in a fictional Sub-Saharan African Country<a class="headerlink" href="#a-fully-worked-solution-teacher-absenteeism-in-a-fictional-sub-saharan-african-country" title="Link to this heading">¶</a></h2>
+<p><strong>Scenario:</strong> We want to investigate if there is a relationship between a teacher’s gender and their attendance record in a fictional country, ‘Kalaharia’. We have data from the Ministry of Education, classifying teachers as having either ‘High Attendance’ or ‘Low Attendance’.</p>
+<p><strong>Data:</strong> We have a fictitious dataset <code class="docutils literal notranslate"><span class="pre">teachers.csv</span></code> with columns for <code class="docutils literal notranslate"><span class="pre">teacher_id</span></code>, <code class="docutils literal notranslate"><span class="pre">gender</span></code> (<code class="docutils literal notranslate"><span class="pre">Male</span></code>, <code class="docutils literal notranslate"><span class="pre">Female</span></code>), and <code class="docutils literal notranslate"><span class="pre">attendance_status</span></code> (<code class="docutils literal notranslate"><span class="pre">High</span></code>, <code class="docutils literal notranslate"><span class="pre">Low</span></code>).</p>
+<p><strong>Identifying Why You’d Use This Test:</strong> We’re dealing with two categorical variables (<code class="docutils literal notranslate"><span class="pre">gender</span></code> and <code class="docutils literal notranslate"><span class="pre">attendance_status</span></code>) and we want to see if they are independent or if there is a statistically significant association between them. This is the perfect use case for a chi-square test of independence.</p>
+<p><strong>How to Run the Test:</strong></p>
+<p>First, we’ll load the data and create a contingency table.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2_contingency</span>
+
+<span class="c1"># Load the fictional dataset</span>
+<span class="c1"># This is a sample DataFrame to simulate the data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;attendance_status&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Low&#39;</span><span class="p">,</span> <span class="s1">&#39;High&#39;</span><span class="p">,</span> <span class="s1">&#39;Low&#39;</span><span class="p">]}</span>
+<span class="n">teachers_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Create the contingency table</span>
+<span class="n">attendance_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">teachers_df</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">],</span> <span class="n">teachers_df</span><span class="p">[</span><span class="s1">&#39;attendance_status&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Contingency Table:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">attendance_table</span><span class="p">)</span>
+
+<span class="c1"># Run the chi-square test</span>
+<span class="n">chi2</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">attendance_table</span><span class="p">)</span>
+
+<span class="c1"># Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Chi-Square Test Results:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-square statistic: </span><span class="si">{</span><span class="n">chi2</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected Frequencies:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">attendance_table</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">attendance_table</span><span class="o">.</span><span class="n">index</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>Interpreting the Result:</strong></p>
+<p>Let’s assume the code output is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Contingency</span> <span class="n">Table</span><span class="p">:</span>
+<span class="n">attendance_status</span>  <span class="n">High</span>  <span class="n">Low</span>
+<span class="n">gender</span>
+<span class="n">Female</span>                <span class="mi">3</span>    <span class="mi">2</span>
+<span class="n">Male</span>                  <span class="mi">3</span>    <span class="mi">2</span>
+
+<span class="n">Chi</span><span class="o">-</span><span class="n">Square</span> <span class="n">Test</span> <span class="n">Results</span><span class="p">:</span>
+<span class="n">Chi</span><span class="o">-</span><span class="n">square</span> <span class="n">statistic</span><span class="p">:</span> <span class="mf">0.00</span>
+<span class="n">P</span><span class="o">-</span><span class="n">value</span><span class="p">:</span> <span class="mf">1.0000</span>
+<span class="n">Degrees</span> <span class="n">of</span> <span class="n">freedom</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">Expected</span> <span class="n">Frequencies</span><span class="p">:</span>
+<span class="n">attendance_status</span>  <span class="n">High</span>  <span class="n">Low</span>
+<span class="n">gender</span>
+<span class="n">Female</span>              <span class="mf">2.5</span>  <span class="mf">2.5</span>
+<span class="n">Male</span>                <span class="mf">2.5</span>  <span class="mf">2.5</span>
+</pre></div>
+</div>
+<p>The <strong>p-value is 1.0000</strong>, which is much greater than our standard significance level of 0.05. This means we <strong>fail to reject the null hypothesis</strong>. Based on this (fictional) dataset, there is <strong>no statistically significant relationship</strong> between a teacher’s gender and their attendance status. The small differences we see in the observed counts (3 vs. 2 for both males and females) are likely due to random chance. The expected frequencies show us that if there were no relationship, we would expect to see 2.5 teachers in each category, which is very close to our observed data.</p>
+<hr class="docutils" />
+</section>
+<section id="your-turn-student-school-access-in-a-fictional-country">
+<h2>11.5 Your Turn: Student School Access in a Fictional Country<a class="headerlink" href="#your-turn-student-school-access-in-a-fictional-country" title="Link to this heading">¶</a></h2>
+<p><strong>Scenario:</strong> A recent study in the fictional country of ‘Zambezia’ examined the relationship between a household’s proximity to a school and whether their children enrolled. The data is available as <code class="docutils literal notranslate"><span class="pre">zambezia_enrollment.csv</span></code> with the following columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">location</span></code>: ‘Rural’ or ‘Urban’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enrollment_status</span></code>: ‘Enrolled’ or ‘Not Enrolled’</p></li>
+</ul>
+<p><strong>Question:</strong> Is there a statistically significant association between a student’s location (rural/urban) and their enrollment status?</p>
+<p>Run a chi-square test on this data and determine the correct conclusion.</p>
+<p>A. The p-value is less than 0.05, so there is a significant relationship between location and enrollment.</p>
+<p>B. The p-value is greater than 0.05, so there is no significant relationship between location and enrollment.</p>
+<p>C. The chi-square statistic is 0, so there is no relationship between location and enrollment.</p>
+<p>D. The test cannot be run as the data is not normally distributed.</p>
+<p><strong>Please choose one of the options above. Once you’ve made your choice, I will provide the analysis.</strong></p>
+<hr class="docutils" />
+</section>
+<section id="run-your-own-analysis">
+<h2>11.6 Run Your Own Analysis<a class="headerlink" href="#run-your-own-analysis" title="Link to this heading">¶</a></h2>
+<p><strong>Scenario:</strong> Do you have your own dataset you’d like to analyze? Maybe you’re working with data on student performance from a specific region, or survey data about parental engagement.</p>
+<p><strong>Prompt:</strong> Upload your dataset (in CSV format) and tell me which two categorical variables you’d like to test for a relationship. I will help you run the chi-square test and walk you through interpreting the results.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">11 The Chi-Square Test</a><ul>
+<li><a class="reference internal" href="#what-the-chi-square-test-looks-at">11.1 What the Chi-Square Test Looks At</a></li>
+<li><a class="reference internal" href="#how-to-interpret-the-results">11.2 How to Interpret the Results</a></li>
+<li><a class="reference internal" href="#how-to-run-the-test-in-python">11.3 How to Run the Test in Python</a></li>
+<li><a class="reference internal" href="#a-fully-worked-solution-teacher-absenteeism-in-a-fictional-sub-saharan-african-country">11.4 A Fully Worked Solution: Teacher Absenteeism in a fictional Sub-Saharan African Country</a></li>
+<li><a class="reference internal" href="#your-turn-student-school-access-in-a-fictional-country">11.5 Your Turn: Student School Access in a Fictional Country</a></li>
+<li><a class="reference internal" href="#run-your-own-analysis">11.6 Run Your Own Analysis</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="06%20Multiple%20Groups%20ANOVA.html"
+                          title="previous chapter">06 Comparing More Than Two Groups: ANOVA</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="07%20Regression.html"
+                          title="next chapter"><strong>07 Analyzing Relationships: Correlation</strong></a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/11 Chi-Square Test.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="07%20Regression.html" title="07 Analyzing Relationships: Correlation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="06%20Multiple%20Groups%20ANOVA.html" title="06 Comparing More Than Two Groups: ANOVA"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">11 The Chi-Square Test</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

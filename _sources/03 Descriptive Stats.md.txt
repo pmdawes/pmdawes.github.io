@@ -1,0 +1,125 @@
+# 03 Descriptive Statistics
+
+*What does the data tell us?*
+
+Once you've loaded your data into Python, the next logical step is to summarize and visualize it. **Descriptive statistics** do exactly that—they describe the main features of a dataset. They don't allow us to make conclusions beyond the data we have, but they are crucial for understanding the story your data is telling.
+
+
+
+### **3.1 Measures of Central Tendency (Mean, Median, Mode)**
+
+
+
+These measures tell us about the "center" or "typical" value of a dataset.
+
+- **Mean:** The simple average. You sum all the values and divide by the number of values. It's the most common measure of central tendency but can be heavily influenced by outliers (extremely high or low values).
+  - *Educational Example:* The average test score for a class.
+- **Median:** The middle value in a sorted dataset. If you have an even number of values, it's the average of the two middle numbers. The median is more robust to outliers than the mean.
+  - *Educational Example:* The median salary of teachers in a district. If a few very highly paid administrators are included, the mean salary might be skewed, but the median would remain a better representation of the typical teacher's salary.
+- **Mode:** The value that appears most frequently in a dataset. It's the only measure of central tendency that can be used with **Nominal** data.
+  - *Educational Example:* The most common grade level in a school (e.g., more students are in grade 9 than any other grade).
+
+Let's use Python to calculate these measures on our fictional student data.
+
+Python
+
+```
+import pandas as pd
+
+# Load our student data
+data = {
+    'Student_ID': ['S001', 'S002', 'S003', 'S004', 'S005', 'S006'],
+    'Gender': ['Female', 'Male', 'Male', 'Female', 'Female', 'Male'],
+    'Test_Score': [85, 78, 92, 88, 78, 95]
+}
+df = pd.DataFrame(data)
+
+# Calculate the mean test score
+mean_score = df['Test_Score'].mean()
+print(f"Mean Test Score: {mean_score}")
+
+# Calculate the median test score
+median_score = df['Test_Score'].median()
+print(f"Median Test Score: {median_score}")
+
+# Calculate the mode of the test scores
+# Note: The .mode() function returns a Series, so we use [0] to get the value
+mode_score = df['Test_Score'].mode()[0]
+print(f"Mode Test Score: {mode_score}")
+```
+
+
+
+#### **3.2 Measures of Variability (Standard Deviation, Variance, Range)**
+
+
+
+These measures tell us about the spread or dispersion of the data. They answer the question: "How much do the data points deviate from the center?"
+
+- **Range:** The simplest measure, calculated as the difference between the maximum and minimum values.
+  - *Educational Example:* The range of student ages in a classroom, from the youngest to the oldest.
+- **Variance:** The average of the squared differences from the mean. It's useful mathematically but can be hard to interpret because the units are squared.
+- **Standard Deviation:** The square root of the variance. It's the most common and intuitive measure of variability because it's in the same units as the original data. A small standard deviation means the data points are clustered closely around the mean, while a large standard deviation means they are more spread out.
+  - *Educational Example:* Comparing the standard deviation of test scores between two schools. A school with a smaller standard deviation has more consistent student performance, while a school with a larger one has a wider range of high and low performers.
+
+Let's compute these with Python.
+
+Python
+
+```
+# Calculate the range
+score_range = df['Test_Score'].max() - df['Test_Score'].min()
+print(f"Range of Test Scores: {score_range}")
+
+# Calculate the variance
+variance_score = df['Test_Score'].var()
+print(f"Variance of Test Scores: {variance_score}")
+
+# Calculate the standard deviation
+std_dev_score = df['Test_Score'].std()
+print(f"Standard Deviation of Test Scores: {std_dev_score}")
+```
+
+
+
+#### **3.3 Visualizing Educational Data (Histograms, Bar Charts, Box Plots)**
+
+
+
+Graphs are powerful. They can reveal patterns and insights that numbers alone might hide. Python's **Matplotlib** and **Seaborn** libraries are excellent for creating professional visualizations.
+
+- **Histograms:** Show the distribution of a single numerical variable. They group data into bins and show the frequency of each bin.
+  - *Educational Example:* A histogram of student test scores can quickly show if the scores are normally distributed (a bell curve) or if they are skewed to one side.
+- **Bar Charts:** Used to compare categorical data. The height of each bar represents the frequency or a summary statistic for that category.
+  - *Educational Example:* A bar chart showing the number of students enrolled in different subjects (e.g., Science, Arts, Humanities).
+- **Box Plots:** A great way to visualize the distribution of a numerical variable and to identify outliers. They show the median, the quartiles, and the range of the data.
+  - *Educational Example:* A box plot comparing the distribution of test scores between male and female students can quickly show differences in medians and spread.
+
+Let's create a histogram and a box plot using Python.
+
+Python
+
+```
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Create a figure and axis object
+fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+# Create a histogram of test scores
+sns.histplot(df['Test_Score'], kde=True, ax=ax[0])
+ax[0].set_title('Distribution of Test Scores')
+ax[0].set_xlabel('Test Score')
+ax[0].set_ylabel('Frequency')
+
+# Create a box plot to visualize the same data and identify outliers
+sns.boxplot(x=df['Test_Score'], ax=ax[1])
+ax[1].set_title('Box Plot of Test Scores')
+ax[1].set_xlabel('Test Score')
+
+# Display the plots
+plt.tight_layout()
+plt.show()
+```
+
+The combination of descriptive statistics and data visualizations provides a comprehensive first look at your data. Before you move on to more complex inferential tests, always take the time to understand the basic story your data is telling you. This will help you formulate better hypotheses and interpret your results more accurately.

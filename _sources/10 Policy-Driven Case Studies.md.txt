@@ -1,0 +1,167 @@
+# 10 Policy-Driven Case Studies
+
+
+
+This final chapter brings everything we've learned together. So far, we've treated statistical concepts and Python techniques in isolation. Now, we'll see how to integrate them into a complete analytical workflow to address real-world educational policy questions. These case studies demonstrate the power of data analysis to inform decision-making, from program evaluation to resource allocation.
+
+------
+
+
+
+#### **10.1 Case Study: Evaluating the Impact of a Teacher Training Program**
+
+
+
+A common challenge for educational ministries is determining whether a new intervention actually works. The Ministry of Education in Lesotho wants to evaluate the impact of a new teacher training program on student literacy outcomes.
+
+**The Policy Question:** Did the new teacher training program significantly improve student literacy scores?
+
+**The Data:** We have a dataset from 50 schools. In 25 schools, teachers participated in the new training program (the treatment group). In the other 25 schools, teachers continued with the standard curriculum (the control group). At the end of the school year, all students took a standardized literacy test.
+
+**The Analytical Approach:**
+
+1. **Identify the right test:** The policy question is about comparing the average literacy scores of two independent groups (schools that received training vs. schools that did not). The literacy score is a continuous variable. This is a perfect scenario for an **Independent Samples t-test**.
+
+2. **Hypotheses:**
+
+   - H0
+
+     : There is no significant difference in the mean literacy scores between the treatment and control groups.
+
+   - H1
+
+     : The mean literacy score of the treatment group is significantly higher than the control group.
+
+3. **Python Implementation:**
+
+   Python
+
+   ```
+   import pandas as pd
+   from scipy import stats
+   
+   # Fictitious data simulating the results
+   data = {
+       'School_ID': range(1, 51),
+       'Program_Group': ['Training'] * 25 + ['Control'] * 25,
+       'Avg_Literacy_Score': list(range(65, 90)) + list(range(50, 75))
+   }
+   df = pd.DataFrame(data)
+   
+   # Separate the data into two groups
+   training_scores = df[df['Program_Group'] == 'Training']['Avg_Literacy_Score']
+   control_scores = df[df['Program_Group'] == 'Control']['Avg_Literacy_Score']
+   
+   # Perform the t-test
+   t_stat, p_val = stats.ttest_ind(training_scores, control_scores, equal_var=False)
+   
+   print(f"t-statistic: {t_stat:.2f}")
+   print(f"p-value: {p_val:.3f}")
+   ```
+
+**The Interpretation:** If the p-value is less than 0.05, we can reject the null hypothesis. The Ministry can confidently conclude that the new training program had a statistically significant positive impact on student literacy scores. This result provides the evidence needed to justify scaling up the program.
+
+------
+
+
+
+#### **10.2 Case Study: Analyzing Enrollment Trends and Projections**
+
+
+
+Policymakers in Rwanda need to plan for future school construction and teacher recruitment. They want to understand the factors driving student enrollment trends over time.
+
+**The Policy Question:** What factors are most strongly associated with changes in school enrollment, and can we use these factors to predict future enrollment?
+
+**The Analytical Approach:** This is a question about prediction and understanding relationships between multiple variables. This calls for **Multiple Linear Regression**. We'll use school-level data to predict enrollment based on variables like population density, family income, and per-school funding.
+
+1. **Identify the right test:** The goal is to predict a continuous variable (`Enrollment`) using multiple continuous and categorical predictors. **Multiple linear regression** is the appropriate tool.
+
+2. **Model Variables:**
+
+   - **Dependent Variable (y):** `Total_Enrollment`.
+   - **Independent Variables (X):** `Population_Density`, `Average_Family_Income`, `School_Funding`.
+
+3. **Python Implementation:**
+
+   Python
+
+   ```
+   import pandas as pd
+   import statsmodels.api as sm
+   
+   # Fictitious data simulating school enrollment factors
+   data = {
+       'Total_Enrollment': [250, 300, 450, 520, 600, 750, 800, 900],
+       'Population_Density': [100, 150, 200, 250, 300, 350, 400, 450],
+       'Avg_Family_Income': [2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500],
+       'School_Funding': [500, 600, 700, 800, 900, 1000, 1100, 1200]
+   }
+   df = pd.DataFrame(data)
+   
+   y = df['Total_Enrollment']
+   X = df[['Population_Density', 'Avg_Family_Income', 'School_Funding']]
+   X = sm.add_constant(X) # Add a constant for the intercept
+   
+   model = sm.OLS(y, X).fit()
+   print(model.summary())
+   ```
+
+**The Interpretation:** The model summary will reveal which factors are significant predictors of enrollment. The coefficients will show the expected change in enrollment for a one-unit change in each factor, holding others constant. For example, if the `Population_Density` coefficient is positive and significant, it confirms that enrollment is indeed higher in more densely populated areas. The R-squared value will tell us how much of the variation in enrollment is explained by our model, providing a measure of its predictive power.
+
+------
+
+
+
+#### **10.3 Case Study: Examining Factors Affecting Student Dropout Rates**
+
+
+
+In Namibia, the Ministry of Education is concerned about rising student dropout rates. They want to identify the key factors contributing to this problem across different regions.
+
+**The Policy Question:** Are there significant regional differences in student dropout rates? If so, what factors are associated with these differences?
+
+**The Analytical Approach:** This is a two-part question. First, we need to compare the means of more than two groups (`Regional_Dropout_Rate`). This requires an **ANOVA** test. If we find a significant difference, we can then use post-hoc tests to pinpoint which regions differ.
+
+1. **Identify the right test:** The problem involves comparing the mean dropout rates across three independent regions (North, Central, South). **ANOVA** is the correct choice.
+
+2. **Hypotheses:**
+
+   - H0
+
+     : The mean dropout rates are equal across all three regions.
+
+   - H1
+
+     : At least one regional mean dropout rate is significantly different.
+
+3. **Python Implementation:**
+
+   Python
+
+   ```
+   import pandas as pd
+   from scipy import stats
+   
+   # Fictitious data for regional dropout rates
+   data = {
+       'Region': ['North'] * 10 + ['Central'] * 10 + ['South'] * 10,
+       'Dropout_Rate': [5.1, 6.2, 5.5, 7.0, 6.5, 5.9, 7.2, 6.8, 6.0, 5.8,
+                         3.5, 4.0, 3.8, 4.2, 4.5, 3.9, 4.1, 3.7, 4.3, 4.0,
+                         8.5, 9.1, 8.8, 9.2, 8.7, 9.0, 8.9, 9.5, 8.6, 9.3]
+   }
+   df = pd.DataFrame(data)
+   
+   # Separate data into groups
+   north_rates = df[df['Region'] == 'North']['Dropout_Rate']
+   central_rates = df[df['Region'] == 'Central']['Dropout_Rate']
+   south_rates = df[df['Region'] == 'South']['Dropout_Rate']
+   
+   # Perform the ANOVA test
+   f_stat, p_val = stats.f_oneway(north_rates, central_rates, south_rates)
+   
+   print(f"ANOVA F-statistic: {f_stat:.2f}")
+   print(f"ANOVA p-value: {p_val:.3f}")
+   ```
+
+**The Interpretation:** If the p-value is less than 0.05, we reject the null hypothesis and conclude that there is a significant difference in dropout rates among the regions. Looking at the data, it's clear the South has a much higher rate. This finding would prompt policymakers to investigate the specific factors in the South that are contributing to the higher dropout rate, such as poverty, lack of resources, or access to schools. This analysis transforms a general concern into a targeted, data-driven investigation.

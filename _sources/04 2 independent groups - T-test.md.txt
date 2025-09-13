@@ -1,0 +1,226 @@
+# 04 The T-test - Comparing Averages
+
+## What is a T-test?
+
+The t-test is one of the most fundamental tools in a data analyst's toolkit, especially when working with educational policy. At its core, the **t-test is a statistical method used to determine if there is a significant difference between the means of two groups**.
+
+Think about it this way: We've implemented a new, inquiry-based curriculum in half of the schools in a district, while the other half continues with the traditional curriculum. At the end of the year, we want to know if the new curriculum made a difference in student test scores. We can't simply look at the averages and say, "The new curriculum group had an average score of 85, and the old one had 83, so the new one is better." That difference of 2 points might just be due to random chance. The t-test helps us quantify the probability that this difference is a real effect, rather than just random variation.
+
+Here are some other educational policy questions a t-test can help us answer:
+
+- Does the average attendance rate differ significantly between students who participate in an after-school mentorship program and those who don't?
+- Is there a significant difference in teacher job satisfaction scores between teachers in urban vs. rural schools?
+- Do students who receive a school-provided lunch have a significantly different average test score than those who bring their own?
+
+
+
+## How to Interpret the Results and Assumptions to Check
+
+
+
+When you run a t-test, you get two main outputs: the **t-statistic** and the **p-value**.
+
+- The **t-statistic** is a measure of the difference between the two groups relative to the variability within the groups. A larger t-statistic (in absolute value) suggests a greater difference between the group means.
+- The **p-value** is the probability of observing a difference as large as the one in your sample, assuming there is no real difference between the groups in the population. The standard threshold for significance in social sciences is typically **0.05**. If your p-value is less than 0.05, you can say that the difference between the two groups is **statistically significant**, meaning it's unlikely to have occurred by random chance.
+
+
+
+### Key Assumptions of the T-test:
+
+
+
+Before you run a t-test, it's crucial to check that your data meets certain assumptions. Violating these assumptions can lead to unreliable results.
+
+1. **Independence**: The observations in each group must be independent of each other. For example, the test scores of one student should not influence the test scores of another. This is often the most important assumption to meet.
+2. **Normality**: The data in each of the two groups should be approximately normally distributed. While t-tests are fairly robust to violations of this assumption with larger sample sizes, it's good practice to check this with a histogram or a Q-Q plot.
+3. **Homogeneity of Variances** (for the standard Student's t-test): The variance (or spread) of the data in both groups should be roughly equal. If they are not, you should use a version of the t-test that accounts for unequal variances (like Welch's t-test).
+
+Let's look at three examples:
+
+1. **Scenario**: You compare the average math scores of students in a new digital learning program (Group A) with a control group using traditional methods (Group B).
+   - **Result**: The p-value is 0.01.
+   - **Interpretation**: Since 0.01 is less than 0.05, the difference in average scores is statistically significant. You can conclude that the digital learning program had a real impact on math scores, assuming all assumptions are met.
+2. **Scenario**: You analyze the average hours spent on homework per week by students who have access to a school library on weekends vs. those who do not.
+   - **Result**: The p-value is 0.23.
+   - **Interpretation**: Since 0.23 is greater than 0.05, the difference is not statistically significant. You cannot confidently conclude that having weekend library access leads to more or less homework time. The observed difference could be due to random chance.
+3. **Scenario**: You compare the average class sizes in public schools vs. private schools and find a large difference, but your sample size is very small (e.g., 5 schools per group).
+   - **Interpretation**: Even if you get a small p-value, you must be cautious. A small sample size can make it difficult to trust the normality and homogeneity of variance assumptions. You'd need to explicitly state this limitation in your analysis.
+
+------
+
+
+
+## Testing interactive code blocks
+
+```{code-cell}
+:editable: true
+
+x = 5
+y = 10
+print(x + y)
+```
+
+
+
+## How to Run a T-test in Python
+
+
+
+Python makes running a t-test incredibly straightforward, especially with libraries like `SciPy`. We will use the `ttest_ind` function from the `scipy.stats` module.
+
+Python
+
+```
+# Import necessary libraries
+import pandas as pd
+from scipy import stats
+
+# Assuming you have two data series, 'group_a' and 'group_b'
+# Let's create some dummy data for now
+group_a = [78, 85, 82, 90, 88, 75, 83, 91, 87, 86]
+group_b = [70, 75, 68, 80, 72, 79, 73, 76, 71, 74]
+
+# Perform the independent t-test
+t_statistic, p_value = stats.ttest_ind(group_a, group_b)
+
+print(f"T-statistic: {t_statistic}")
+print(f"P-value: {p_value}")
+
+# Interpret the result
+alpha = 0.05
+if p_value < alpha:
+    print("The difference between the two groups is statistically significant.")
+else:
+    print("The difference between the two groups is not statistically significant.")
+```
+
+Note that the `ttest_ind` function has an optional parameter, `equal_var`, which is `True` by default. This assumes equal variances. If you have checked your data and found that the variances are unequal, you can set `equal_var=False` to perform Welch's t-test.
+
+------
+
+
+
+## A Fully Worked Solution: The Impact of Teacher Training
+
+
+
+For this example, we will use a fictitious dataset based on teacher and student performance data from Kenya. Our goal is to determine if a new professional development program for teachers has a significant impact on their students' end-of-year standardized test scores.
+
+
+
+### 1. Identifying Why You'd Use This Test
+
+
+
+We want to compare the average test scores of students taught by teachers who received the new training program against the scores of students whose teachers did not. We have two independent groups, and we are comparing their means. This is a classic case for an **independent samples t-test**.
+
+
+
+### 2. The Data
+
+
+
+Our dataset, `kenya_education_data.csv`, contains a column for `test_score` and a categorical column `teacher_training_program` with values 'Trained' and 'Not Trained'.
+
+
+
+### 3. Running the Test
+
+
+
+We'll load the data into a pandas DataFrame, separate the two groups, and then run the t-test.
+
+Python
+
+```
+# Assuming you have the data in a CSV file
+df = pd.read_csv('kenya_education_data.csv')
+
+# Separate the groups
+trained_teachers = df[df['teacher_training_program'] == 'Trained']['test_score']
+untrained_teachers = df[df['teacher_training_program'] == 'Not Trained']['test_score']
+
+# Perform the t-test
+t_stat, p_val = stats.ttest_ind(trained_teachers, untrained_teachers, equal_var=True)
+
+print(f"T-statistic: {t_stat}")
+print(f"P-value: {p_val}")
+
+# Let's also look at the means to understand the direction of the difference
+print(f"Mean score for trained teachers: {trained_teachers.mean():.2f}")
+print(f"Mean score for untrained teachers: {untrained_teachers.mean():.2f}")
+```
+
+
+
+### 4. Interpreting the Result
+
+
+
+Let's assume the output is:
+
+```
+T-statistic: 3.52
+P-value: 0.0005
+Mean score for trained teachers: 78.50
+Mean score for untrained teachers: 72.30
+```
+
+- **P-value**: The p-value is 0.0005. Since this is much less than our significance level of 0.05, we conclude that the difference is **statistically significant**.
+- **Means**: The average score for students with trained teachers is 78.50, which is higher than the average score of 72.30 for students with untrained teachers.
+- **Conclusion**: Based on this analysis, there is strong statistical evidence to suggest that the teacher training program had a positive and significant impact on student test scores. As a policy analyst, this result would support the recommendation to expand the program to more teachers.
+
+------
+
+
+
+## Your Turn: Analyzing Student Attendance
+
+
+
+Now, it's your turn to apply what you've learned. Consider a scenario in Uganda, where a new policy provides a small daily stipend to families of students with perfect attendance. You have a publicly available, fictitious dataset `uganda_attendance.csv` which contains two columns: `attendance_rate` (a percentage) and `stipend_group` ('Stipend' or 'No Stipend').
+
+**Question**: You want to determine if there is a statistically significant difference in the average attendance rate between the two groups. What would you do?
+
+A) Use a Chi-Square test to compare the groups.
+
+B) Conduct an independent samples t-test to compare the mean attendance rates.
+
+C) Calculate the correlation between attendance_rate and stipend_group.
+
+D) Create a histogram of attendance_rate and visually compare the two groups.
+
+<br>
+
+<br>
+
+**Click below to see the correct answer and analysis.**
+
+<details>
+<summary>Answer</summary>
+
+The correct answer is B). Here's why:
+
+- You have a **continuous dependent variable** (`attendance_rate`) and a **categorical independent variable with two levels** (`stipend_group`).
+- Your goal is to compare the **means** of these two groups to see if the difference is statistically significant.
+- This specific problem is perfectly suited for an **independent samples t-test**.
+
+**Why the others are incorrect:**
+
+- **A)** A Chi-Square test is used for comparing relationships between two **categorical** variables.
+- **C)** Correlation measures the strength of a linear relationship between two **continuous** variables.
+- **D)** A histogram is a great first step for visualization and checking assumptions (like normality), but it's not a statistical test that can determine significance.
+
+</details>
+
+------
+
+
+
+## Your Own Data Analysis
+
+
+
+Now, I invite you to take these skills and apply them to a dataset of your own. If you have a two-group comparison question, I can help you structure the analysis.
+
+**Please share a brief description of your data and the two groups you wish to compare, and I will guide you through the process of running a t-test and interpreting the results.**

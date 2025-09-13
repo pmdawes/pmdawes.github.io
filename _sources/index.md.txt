@@ -1,0 +1,67 @@
+# Statistical Analysis of Education for International Development
+
+## *Using Python to run statistical analysis*
+
+An interactive statistics with python tutorial for education professionals supporting education systems in low-income countries. 
+
+**Part I: The Foundations of Educational Data Analysis**
+```{toctree}
+:maxdepth: 2
+
+01 Data Types.md
+02 Python Intro.md
+03 Descriptive Stats.md
+```
+
+**Part II: Inferential Statistics: Testing Hypotheses and Finding Relationships**
+```{toctree}
+:maxdepth: 2
+
+04 2 independent groups - T-test.md
+05 2 dependent groups - T-test.md
+06 Multiple Groups ANOVA.md
+11 Chi-Square Test.md
+07 Regression.md
+08 Multiple Linear Regression.md
+```
+
+Part III: Advanced Topics and Case Studies
+```{toctree}
+:maxdepth: 2
+
+09 Geospatial Analysis.md
+10 Policy-Driven Case Studies.md
+
+```
+<button onclick="window.print()">Print this page</button>
+
+## To Do: 
+Navigation 
+Different themes    
+Exporting to PDF
+Embed code blocks
+Embed AI chatbot
+Embed Plotly Dash
+GitHub updating
+Hosting on GitHub pages
+Actually do the exercises... format/edit as I go along
+
+Add sections on: 
+
+- Data storytelling
+- EDA
+- Data cleaning using... Julius, Plotly Studio...?
+
+
+
+## Getting started with Sphinx
+See NewSphinx.py for the code to create a new directory (in v1, in the archive)
+Needed some manual modding - e.g. creating a docs folder (build/source), modding the config file for md not rst (see '03 Setting up Myst for md not rst support')
+
+I didn't set it up in a virtual environment - this would have protected it from other libraries / extensions in my setup, making it more reliable / less likely a dependancy will break it. I think I need to in order to get the extensions (for jupyter etc) working
+
+To build the document, in the terminal, execute:
+
+sphinx-build -M html docs/source/ docs/build/
+
+I think collaborators could work on StackEdit connected to GitHub - a markdown environment through a web browser - so they could all edit. 

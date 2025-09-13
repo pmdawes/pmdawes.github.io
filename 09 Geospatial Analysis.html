@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>09 The Power of Location: Geospatial Analysis of Educational Data &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="10 Policy-Driven Case Studies" href="10%20Policy-Driven%20Case%20Studies.html" />
+    <link rel="prev" title="08 Predicting Outcomes: Simple and Multiple Linear Regression" href="08%20Multiple%20Linear%20Regression.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="10%20Policy-Driven%20Case%20Studies.html" title="10 Policy-Driven Case Studies"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="08%20Multiple%20Linear%20Regression.html" title="08 Predicting Outcomes: Simple and Multiple Linear Regression"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">09 The Power of Location: Geospatial Analysis of Educational Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="the-power-of-location-geospatial-analysis-of-educational-data">
+<h1>09 The Power of Location: Geospatial Analysis of Educational Data<a class="headerlink" href="#the-power-of-location-geospatial-analysis-of-educational-data" title="Link to this heading">¶</a></h1>
+<p>Up to this point, our data analysis has been largely “aspatial”—we’ve focused on numbers and categories, but we haven’t considered where our data points are located. In educational policy, however, location is often a critical factor. Where a school is situated, its proximity to other schools, or its relationship to population centers can tell us a great deal about equity, access, and resource distribution. <strong>Geospatial analysis</strong> allows us to leverage this locational data to create powerful, insightful maps and to uncover spatial patterns.</p>
+<hr class="docutils" />
+<section id="mapping-school-locations-and-student-demographics">
+<h2><strong>9.1 Mapping School Locations and Student Demographics</strong><a class="headerlink" href="#mapping-school-locations-and-student-demographics" title="Link to this heading">¶</a></h2>
+<p>The first step in any geospatial analysis is to represent your data on a map. This requires two things: a dataset with geographic coordinates (latitude and longitude) and a Python library capable of handling spatial data. <strong>Geopandas</strong> is the go-to library for this task, as it extends the power of Pandas to include geographic data types.</p>
+<p>Let’s imagine we have a dataset from the Ministry of Education in a fictional country, detailing the locations of all its primary schools. We can plot these schools on a map to visualize their distribution.</p>
+<p><em>Educational Example:</em> We can create a map showing the locations of schools and color-code the points based on a variable like <code class="docutils literal notranslate"><span class="pre">School_Type</span></code> (e.g., public vs. private) or <code class="docutils literal notranslate"><span class="pre">Rural_Urban_Status</span></code>. This simple visualization can immediately reveal patterns, such as a concentration of private schools in urban areas or a lack of schools in a particular region.</p>
+<p><strong>How to do it in Python:</strong></p>
+<p>First, you need to import the necessary libraries. Geopandas relies on <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> and often <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> for plotting.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Fictional school data with latitude and longitude</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;School_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;S2&#39;</span><span class="p">,</span> <span class="s1">&#39;S3&#39;</span><span class="p">,</span> <span class="s1">&#39;S4&#39;</span><span class="p">,</span> <span class="s1">&#39;S5&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Latitude&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">4.05</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.01</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.1</span><span class="p">],</span>
+    <span class="s1">&#39;Longitude&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">39.66</span><span class="p">,</span> <span class="mf">39.7</span><span class="p">,</span> <span class="mf">39.68</span><span class="p">,</span> <span class="mf">39.65</span><span class="p">,</span> <span class="mf">39.69</span><span class="p">],</span>
+    <span class="s1">&#39;Enrollment&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">850</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">700</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Step 1: Create a GeoDataFrame from the DataFrame</span>
+<span class="c1"># We need to specify the coordinates and a Coordinate Reference System (CRS)</span>
+<span class="c1"># CRS 4326 is the standard for latitude/longitude</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">Latitude</span><span class="p">),</span> <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Step 2: Load a base map (e.g., a shapefile of the country)</span>
+<span class="c1"># For this example, we will create a simple placeholder map</span>
+<span class="n">world</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">gpd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s1">&#39;naturalearth_lowres&#39;</span><span class="p">))</span>
+<span class="n">africa</span> <span class="o">=</span> <span class="n">world</span><span class="p">[</span><span class="n">world</span><span class="o">.</span><span class="n">continent</span> <span class="o">==</span> <span class="s1">&#39;Africa&#39;</span><span class="p">]</span>
+
+<span class="c1"># Step 3: Plot the map</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">africa</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgrey&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribution of Primary Schools&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="analyzing-spatial-patterns-in-test-scores-and-enrollment">
+<h2><strong>9.2 Analyzing Spatial Patterns in Test Scores and Enrollment</strong><a class="headerlink" href="#analyzing-spatial-patterns-in-test-scores-and-enrollment" title="Link to this heading">¶</a></h2>
+<p>Beyond simple mapping, geospatial analysis allows us to ask more complex questions:</p>
+<ul class="simple">
+<li><p>Are schools with higher test scores clustered together in specific areas?</p></li>
+<li><p>Are there “cold spots” of low enrollment that correspond to areas with a high percentage of out-of-school children?</p></li>
+<li><p>Is a new school being built in a location that will effectively serve an underserved population?</p></li>
+</ul>
+<p>Spatial analysis techniques can help us answer these questions. For example, <strong>kernel density estimation</strong> can create a “heat map” of school distribution, highlighting areas with a high concentration of schools. <strong>Spatial autocorrelation</strong> (e.g., Moran’s I) can tell us if a variable, like a test score, is spatially clustered. This would mean that schools with high scores are located near other schools with high scores.</p>
+<p><em>Educational Example:</em> A policy analyst in Uganda wants to see if high-performing schools are clustered in specific regions. Using spatial autocorrelation, they can confirm whether student performance is spatially dependent. If it is, this could suggest that factors like regional resource allocation or local economic conditions have a widespread impact on educational outcomes, rather than being isolated to individual schools.</p>
+<p><strong>How to do it in Python:</strong></p>
+<p>We’ll use a more advanced library called <strong>PySAL</strong> (Python Spatial Analysis Library) for this.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">libpysal.weights</span><span class="w"> </span><span class="kn">import</span> <span class="n">lat2W</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">esda.moran</span><span class="w"> </span><span class="kn">import</span> <span class="n">Moran</span>
+
+<span class="c1"># Fictional data with school locations and average test scores</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;School_ID&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+    <span class="s1">&#39;Latitude&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.55</span><span class="p">,</span> <span class="mf">1.65</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">1.85</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">],</span>
+    <span class="s1">&#39;Longitude&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">32.5</span><span class="p">,</span> <span class="mf">32.6</span><span class="p">,</span> <span class="mf">32.7</span><span class="p">,</span> <span class="mf">32.8</span><span class="p">,</span> <span class="mf">32.55</span><span class="p">,</span> <span class="mf">32.65</span><span class="p">,</span> <span class="mf">32.75</span><span class="p">,</span> <span class="mf">32.85</span><span class="p">,</span> <span class="mf">32.6</span><span class="p">,</span> <span class="mf">32.7</span><span class="p">],</span>
+    <span class="s1">&#39;Avg_Test_Score&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">85</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Create a GeoDataFrame</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">Latitude</span><span class="p">),</span> <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Step 1: Create a spatial weights matrix (defines what &quot;neighbor&quot; means)</span>
+<span class="c1"># We&#39;ll use a k-nearest neighbors approach</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">lat2W</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Step 2: Perform the Moran&#39;s I test for spatial autocorrelation</span>
+<span class="n">moran_test</span> <span class="o">=</span> <span class="n">Moran</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;Avg_Test_Score&#39;</span><span class="p">],</span> <span class="n">w</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Moran&#39;s I Statistic: </span><span class="si">{</span><span class="n">moran_test</span><span class="o">.</span><span class="n">I</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value: </span><span class="si">{</span><span class="n">moran_test</span><span class="o">.</span><span class="n">p_sim</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Interpretation:</strong> The <strong>Moran’s I</strong> statistic ranges from -1 to 1. A positive value indicates clustering (high values are near high values, low values are near low values), while a negative value indicates dispersion (high values are near low values). The p-value tells us if this clustering is statistically significant. If the p-value is less than 0.05, we can conclude that there is significant spatial autocorrelation.</p>
+<hr class="docutils" />
+</section>
+<section id="fully-worked-solution-analyzing-access-to-education-in-nigeria">
+<h2><strong>9.3 Fully Worked Solution: Analyzing Access to Education in Nigeria</strong><a class="headerlink" href="#fully-worked-solution-analyzing-access-to-education-in-nigeria" title="Link to this heading">¶</a></h2>
+<p>A government agency in Nigeria wants to assess the geographical access to primary education. They have a dataset of primary school locations and are planning to build new schools to improve access. They want to identify which areas have the fewest schools and could benefit most from new construction.</p>
+<p><strong>1. The Problem:</strong> We need to find “school deserts” or areas with low school density. A simple way to visualize this is by creating a kernel density map, which will show us the concentration of schools across the country.</p>
+<p><strong>2. The Data:</strong> Our dataset, <code class="docutils literal notranslate"><span class="pre">nigeria_schools_geo.csv</span></code>, contains columns <code class="docutils literal notranslate"><span class="pre">Latitude</span></code> and <code class="docutils literal notranslate"><span class="pre">Longitude</span></code>.</p>
+<p><strong>3. The Analysis:</strong></p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="c1"># Load the dataset (fictitious data)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;nigeria_schools_geo.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a GeoDataFrame</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Longitude</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">Latitude</span><span class="p">),</span> <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:4326&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Create a base map of Nigeria (fictional shapefile)</span>
+<span class="c1"># In a real-world scenario, you would load a proper shapefile of Nigeria&#39;s states or boundaries</span>
+<span class="n">nigeria_map</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;nigeria_boundaries.shp&#39;</span><span class="p">)</span>
+
+<span class="c1"># Step 1: Create a heatmap of school density</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">nigeria_map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgrey&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+
+<span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Kernel Density Map of School Locations in Nigeria&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>4. Interpreting the Result:</strong> The resulting map will show areas of high and low school density. The “hotspots” (darker colors) indicate areas where schools are concentrated, while the “cold spots” (lighter colors) show areas that are underserved. Policy makers can use this visual information to prioritize locations for building new schools, ensuring more equitable access to education.</p>
+<hr class="docutils" />
+</section>
+<section id="question-for-the-reader">
+<h2><strong>9.4 Question for the Reader</strong><a class="headerlink" href="#question-for-the-reader" title="Link to this heading">¶</a></h2>
+<p>You are a data analyst for a ministry in Ghana, and you have a dataset of all public schools with their latitude, longitude, and a variable for <code class="docutils literal notranslate"><span class="pre">Student_Teacher_Ratio</span></code>. You perform a spatial analysis and find that the Moran’s I statistic for <code class="docutils literal notranslate"><span class="pre">Student_Teacher_Ratio</span></code> is positive and statistically significant.</p>
+<p><strong>Question:</strong> What does this result mean for educational policy in Ghana?</p>
+<p>A) There is no relationship between a school’s location and its student-to-teacher ratio.</p>
+<p>B) Schools with high student-to-teacher ratios are randomly distributed across the country.</p>
+<p>C) Schools with a high student-to-teacher ratio are geographically clustered, and those with a low ratio are also clustered.</p>
+<p>D) The student-to-teacher ratio is higher in the north than in the south.</p>
+<p>[Answer: C]</p>
+<p>(Analysis: A positive and statistically significant Moran’s I indicates positive spatial autocorrelation. This means that a variable’s values are similar to their neighbors. Therefore, schools with high student-to-teacher ratios are located near other schools with high ratios, and schools with low ratios are near schools with low ratios. This suggests that factors affecting class size are not randomly distributed but are instead tied to specific regions or locations.)</p>
+<hr class="docutils" />
+</section>
+<section id="your-turn-analyzing-your-own-data">
+<h2><strong>9.5 Your Turn: Analyzing Your Own Data</strong><a class="headerlink" href="#your-turn-analyzing-your-own-data" title="Link to this heading">¶</a></h2>
+<p>Upload your own dataset with latitude and longitude coordinates and at least one variable of interest (e.g., test scores, student-to-teacher ratio, funding levels).</p>
+<p>I’ll help you:</p>
+<ul class="simple">
+<li><p>Convert your data to a GeoDataFrame.</p></li>
+<li><p>Create a simple map to visualize your data points.</p></li>
+<li><p>Run a spatial autocorrelation test (Moran’s I) to check for clustering.</p></li>
+<li><p>Interpret the results and discuss how location impacts your educational variable.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">09 The Power of Location: Geospatial Analysis of Educational Data</a><ul>
+<li><a class="reference internal" href="#mapping-school-locations-and-student-demographics"><strong>9.1 Mapping School Locations and Student Demographics</strong></a></li>
+<li><a class="reference internal" href="#analyzing-spatial-patterns-in-test-scores-and-enrollment"><strong>9.2 Analyzing Spatial Patterns in Test Scores and Enrollment</strong></a></li>
+<li><a class="reference internal" href="#fully-worked-solution-analyzing-access-to-education-in-nigeria"><strong>9.3 Fully Worked Solution: Analyzing Access to Education in Nigeria</strong></a></li>
+<li><a class="reference internal" href="#question-for-the-reader"><strong>9.4 Question for the Reader</strong></a></li>
+<li><a class="reference internal" href="#your-turn-analyzing-your-own-data"><strong>9.5 Your Turn: Analyzing Your Own Data</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="08%20Multiple%20Linear%20Regression.html"
+                          title="previous chapter">08 Predicting Outcomes: Simple and Multiple Linear Regression</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="10%20Policy-Driven%20Case%20Studies.html"
+                          title="next chapter">10 Policy-Driven Case Studies</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/09 Geospatial Analysis.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="10%20Policy-Driven%20Case%20Studies.html" title="10 Policy-Driven Case Studies"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="08%20Multiple%20Linear%20Regression.html" title="08 Predicting Outcomes: Simple and Multiple Linear Regression"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">09 The Power of Location: Geospatial Analysis of Educational Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

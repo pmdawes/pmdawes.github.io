@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>06 Comparing More Than Two Groups: ANOVA &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="11 The Chi-Square Test" href="11%20Chi-Square%20Test.html" />
+    <link rel="prev" title="05 Comparing Groups: The Paired Samples t-test" href="05%202%20dependent%20groups%20-%20T-test.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="11%20Chi-Square%20Test.html" title="11 The Chi-Square Test"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="05%202%20dependent%20groups%20-%20T-test.html" title="05 Comparing Groups: The Paired Samples t-test"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">06 Comparing More Than Two Groups: ANOVA</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="comparing-more-than-two-groups-anova">
+<h1>06 Comparing More Than Two Groups: ANOVA<a class="headerlink" href="#comparing-more-than-two-groups-anova" title="Link to this heading">¶</a></h1>
+<p>We’ve covered how to compare the means of two groups. But what if you have three, four, or even ten groups you want to compare? Running multiple t-tests is not the answer. This approach increases the chance of a “false positive,” where you incorrectly conclude a significant difference exists when it doesn’t. To solve this problem, we use the <strong>Analysis of Variance (ANOVA)</strong> test.</p>
+<hr class="docutils" />
+<section id="when-to-use-anova">
+<h2><strong>6.1 When to Use ANOVA</strong><a class="headerlink" href="#when-to-use-anova" title="Link to this heading">¶</a></h2>
+<p>ANOVA is a statistical test used to determine if there is a <strong>significant difference between the means of three or more independent groups</strong>.</p>
+<p>Think back to our decision tree. You would use this test when:</p>
+<ol class="arabic simple">
+<li><p>Your research question is about comparing three or more separate, distinct groups.</p></li>
+<li><p>Your dependent variable (the outcome) is <strong>Interval</strong> or <strong>Ratio</strong> data.</p></li>
+<li><p>Your independent variable (the grouping variable) is <strong>Nominal</strong> and has three or more categories.</p></li>
+</ol>
+<p><em>Educational Examples:</em></p>
+<ul class="simple">
+<li><p>Is there a significant difference in the average test scores of students from different grade levels (e.g., Grade 9, Grade 10, Grade 11)?</p></li>
+<li><p>Do teachers in three different regions (e.g., North, Central, South) have significantly different average salaries?</p></li>
+<li><p>Does student attendance vary significantly across different types of schools (e.g., Public, Private, Charter)?</p></li>
+</ul>
+<p>The key insight of ANOVA is that it compares the <strong>variance</strong> between the groups to the <strong>variance</strong> within the groups. If the variance between the groups is much larger than the variance within the groups, it suggests the group means are significantly different.</p>
+<hr class="docutils" />
+</section>
+<section id="interpreting-the-results">
+<h2><strong>6.2 Interpreting the Results</strong><a class="headerlink" href="#interpreting-the-results" title="Link to this heading">¶</a></h2>
+<p>Similar to the t-test, ANOVA has a null and alternative hypothesis:</p>
+<ul>
+<li><p>Null Hypothesis (</p>
+<p>H0</p>
+<p>): The means of all groups are equal. Any observed differences are due to random chance.</p>
+</li>
+<li><p>Alternative Hypothesis (</p>
+<p>H1</p>
+<p>): At least one group mean is significantly different from the others.</p>
+</li>
+</ul>
+<p>ANOVA provides a key statistic called the <strong>F-statistic</strong> and a corresponding <strong>p-value</strong>.</p>
+<ul class="simple">
+<li><p><strong>F-statistic:</strong> The ratio of the variance between the groups to the variance within the groups. A larger F-statistic suggests a larger difference between group means.</p></li>
+<li><p><strong>p-value:</strong> The probability of observing the F-statistic you calculated, if the null hypothesis were true.</p></li>
+<li><p>If the <strong>p-value is less than your significance level (typically 0.05)</strong>, you <strong>reject the null hypothesis</strong>. This means there is a significant difference <em>somewhere</em> among the group means. However, it doesn’t tell you <em>which</em> groups are different.</p></li>
+<li><p>If the <strong>p-value is greater than 0.05</strong>, you <strong>fail to reject the null hypothesis</strong>. You cannot conclude there is a significant difference between the means.</p></li>
+</ul>
+<p>When you reject the null hypothesis, you often need to perform a <strong>post-hoc test</strong> (like Tukey’s HSD) to find out which specific group pairs are significantly different from each other.</p>
+<hr class="docutils" />
+</section>
+<section id="running-anova-in-python">
+<h2><strong>6.3 Running ANOVA in Python</strong><a class="headerlink" href="#running-anova-in-python" title="Link to this heading">¶</a></h2>
+<p>We will again use the <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> library for a simple one-way ANOVA.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="c1"># Fictional data: Test scores for students in three different schools</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;School_ID&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;S2&#39;</span><span class="p">,</span> <span class="s1">&#39;S3&#39;</span><span class="p">,</span> <span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;S2&#39;</span><span class="p">,</span> <span class="s1">&#39;S3&#39;</span><span class="p">,</span> <span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;S2&#39;</span><span class="p">,</span> <span class="s1">&#39;S3&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Test_Score&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">85</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">89</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">80</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Separate the scores into three groups</span>
+<span class="n">school_1_scores</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;School_ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;S1&#39;</span><span class="p">][</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span>
+<span class="n">school_2_scores</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;School_ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;S2&#39;</span><span class="p">][</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span>
+<span class="n">school_3_scores</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;School_ID&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;S3&#39;</span><span class="p">][</span><span class="s1">&#39;Test_Score&#39;</span><span class="p">]</span>
+
+<span class="c1"># Perform the one-way ANOVA test</span>
+<span class="n">f_statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">f_oneway</span><span class="p">(</span><span class="n">school_1_scores</span><span class="p">,</span> <span class="n">school_2_scores</span><span class="p">,</span> <span class="n">school_3_scores</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ANOVA Results:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F-statistic: </span><span class="si">{</span><span class="n">f_statistic</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Interpret the result</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result: Reject the null hypothesis. At least one school&#39;s mean score is significantly different.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result: Fail to reject the null hypothesis. No significant difference in mean scores across schools.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+</section>
+<section id="fully-worked-solution-analyzing-school-enrollment-in-nigeria">
+<h2><strong>6.4 Fully Worked Solution: Analyzing School Enrollment in Nigeria</strong><a class="headerlink" href="#fully-worked-solution-analyzing-school-enrollment-in-nigeria" title="Link to this heading">¶</a></h2>
+<p>Let’s use a fictitious dataset from the Nigerian National Bureau of Statistics to analyze school enrollment. Policymakers are interested in whether there is a significant difference in the average primary school enrollment across Nigeria’s three major geopolitical zones: North, South, and Central.</p>
+<p><strong>1. The Problem:</strong></p>
+<p>We need to compare the mean primary school enrollment across three independent groups. This is a classic case for a one-way ANOVA. Our variables are <code class="docutils literal notranslate"><span class="pre">Geopolitical_Zone</span></code> (Nominal, 3 categories) and <code class="docutils literal notranslate"><span class="pre">Primary_Enrollment</span></code> (Ratio).</p>
+<p><strong>2. The Data:</strong></p>
+<p>Our dataset, <code class="docutils literal notranslate"><span class="pre">nigeria_schools.csv</span></code>, contains columns <code class="docutils literal notranslate"><span class="pre">Geopolitical_Zone</span></code> and <code class="docutils literal notranslate"><span class="pre">Primary_Enrollment</span></code>.</p>
+<p><strong>3. The Analysis:</strong></p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="c1"># Load the dataset (fictitious data)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;nigeria_schools.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Step 1: Separate the data into groups based on geopolitical zone</span>
+<span class="n">north_enrollment</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Geopolitical_Zone&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;North&#39;</span><span class="p">][</span><span class="s1">&#39;Primary_Enrollment&#39;</span><span class="p">]</span>
+<span class="n">south_enrollment</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Geopolitical_Zone&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;South&#39;</span><span class="p">][</span><span class="s1">&#39;Primary_Enrollment&#39;</span><span class="p">]</span>
+<span class="n">central_enrollment</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Geopolitical_Zone&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Central&#39;</span><span class="p">][</span><span class="s1">&#39;Primary_Enrollment&#39;</span><span class="p">]</span>
+
+<span class="c1"># Step 2: Perform the ANOVA test</span>
+<span class="n">f_stat</span><span class="p">,</span> <span class="n">p_val</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">f_oneway</span><span class="p">(</span><span class="n">north_enrollment</span><span class="p">,</span> <span class="n">south_enrollment</span><span class="p">,</span> <span class="n">central_enrollment</span><span class="p">)</span>
+
+<span class="c1"># Step 3: Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ANOVA Results:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;F-statistic = </span><span class="si">{</span><span class="n">f_stat</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p-value = </span><span class="si">{</span><span class="n">p_val</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Optional: Get descriptive stats to see the group means</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Group Means:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Geopolitical_Zone&#39;</span><span class="p">)[</span><span class="s1">&#39;Primary_Enrollment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>4. Interpreting the Result:</strong></p>
+<p>Let’s assume the output is: <code class="docutils literal notranslate"><span class="pre">F-statistic</span> <span class="pre">=</span> <span class="pre">9.87</span></code>, <code class="docutils literal notranslate"><span class="pre">p-value</span> <span class="pre">=</span> <span class="pre">0.000</span></code>.</p>
+<p>The p-value (0.000) is well below our 0.05 significance level. Therefore, we <strong>reject the null hypothesis</strong>.</p>
+<p><strong>Conclusion:</strong> There is a statistically significant difference in mean primary school enrollment across the three geopolitical zones in Nigeria. To find out which specific zones differ, we would need to run a post-hoc test. The descriptive statistics show the mean enrollment for each zone, which gives us an initial idea of where the differences lie.</p>
+<hr class="docutils" />
+</section>
+<section id="question-for-the-reader">
+<h2><strong>6.5 Question for the Reader</strong><a class="headerlink" href="#question-for-the-reader" title="Link to this heading">¶</a></h2>
+<p>You are a policy analyst in Ghana studying student performance. You want to see if the average scores on the Basic Education Certificate Examination (BECE) are significantly different among students attending public, private, and community schools.</p>
+<p><strong>Question:</strong> After collecting data from a sample of schools, you should use an ANOVA test. What would you do if your ANOVA test result shows a p-value of 0.02?</p>
+<p>A) Conclude that there is no significant difference between any of the school types.</p>
+<p>B) Conclude that the mean score of public schools is significantly different from that of private and community schools.</p>
+<p>C) Conclude that there is a significant difference in mean scores among the three school types, and then run a post-hoc test to identify which specific groups are different.</p>
+<p>D) Conclude that there is a significant difference, but you cannot make any further claims without more data.</p>
+<p>[Answer: C]</p>
+<p>(Analysis: A p-value of 0.02 is less than 0.05, which means we reject the null hypothesis of equal means. This tells us a significant difference exists somewhere among the three groups. However, ANOVA itself doesn’t tell us where that difference is. We need to follow up with a post-hoc test (like Tukey’s) to compare the pairs of groups (Public vs. Private, Public vs. Community, Private vs. Community) and pinpoint the source of the difference.)</p>
+<hr class="docutils" />
+</section>
+<section id="your-turn-analyzing-your-own-data">
+<h2><strong>6.6 Your Turn: Analyzing Your Own Data</strong><a class="headerlink" href="#your-turn-analyzing-your-own-data" title="Link to this heading">¶</a></h2>
+<p>Upload a dataset that has at least three independent groups and a continuous variable. For example, you might have teacher satisfaction ratings from schools in three different districts, or student-to-teacher ratios from various types of educational institutions.</p>
+<p>I’ll guide you through:</p>
+<ul class="simple">
+<li><p>Identifying the appropriate columns.</p></li>
+<li><p>Running the ANOVA test in Python.</p></li>
+<li><p>Interpreting the results and discussing the need for post-hoc tests if necessary.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">06 Comparing More Than Two Groups: ANOVA</a><ul>
+<li><a class="reference internal" href="#when-to-use-anova"><strong>6.1 When to Use ANOVA</strong></a></li>
+<li><a class="reference internal" href="#interpreting-the-results"><strong>6.2 Interpreting the Results</strong></a></li>
+<li><a class="reference internal" href="#running-anova-in-python"><strong>6.3 Running ANOVA in Python</strong></a></li>
+<li><a class="reference internal" href="#fully-worked-solution-analyzing-school-enrollment-in-nigeria"><strong>6.4 Fully Worked Solution: Analyzing School Enrollment in Nigeria</strong></a></li>
+<li><a class="reference internal" href="#question-for-the-reader"><strong>6.5 Question for the Reader</strong></a></li>
+<li><a class="reference internal" href="#your-turn-analyzing-your-own-data"><strong>6.6 Your Turn: Analyzing Your Own Data</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="05%202%20dependent%20groups%20-%20T-test.html"
+                          title="previous chapter">05 Comparing Groups: The Paired Samples t-test</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="11%20Chi-Square%20Test.html"
+                          title="next chapter">11 The Chi-Square Test</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/06 Multiple Groups ANOVA.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="11%20Chi-Square%20Test.html" title="11 The Chi-Square Test"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="05%202%20dependent%20groups%20-%20T-test.html" title="05 Comparing Groups: The Paired Samples t-test"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">06 Comparing More Than Two Groups: ANOVA</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

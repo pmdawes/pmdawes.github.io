@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>08 Predicting Outcomes: Simple and Multiple Linear Regression &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="09 The Power of Location: Geospatial Analysis of Educational Data" href="09%20Geospatial%20Analysis.html" />
+    <link rel="prev" title="07 Analyzing Relationships: Correlation" href="07%20Regression.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="09%20Geospatial%20Analysis.html" title="09 The Power of Location: Geospatial Analysis of Educational Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="07%20Regression.html" title="07 Analyzing Relationships: Correlation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">08 Predicting Outcomes: Simple and Multiple Linear Regression</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="predicting-outcomes-simple-and-multiple-linear-regression">
+<h1>08 Predicting Outcomes: Simple and Multiple Linear Regression<a class="headerlink" href="#predicting-outcomes-simple-and-multiple-linear-regression" title="Link to this heading">¶</a></h1>
+<p>In the last chapter, we saw how correlation can tell us if two variables are related. But what if you want to use one or more variables to <strong>predict</strong> the value of another? This is the core purpose of <strong>linear regression</strong>. It allows policymakers and researchers to model relationships and forecast outcomes, providing a powerful tool for strategic planning.</p>
+<hr class="docutils" />
+<section id="the-principles-of-linear-regression">
+<h2><strong>8.1 The Principles of Linear Regression</strong><a class="headerlink" href="#the-principles-of-linear-regression" title="Link to this heading">¶</a></h2>
+<p>Linear regression finds the “best-fitting” straight line through a set of data points on a scatter plot. This line, known as the <strong>regression line</strong>, is defined by an equation:</p>
+<p>y=β0+β1x+ϵ</p>
+<ul>
+<li><p>y</p>
+<p>: The <strong>dependent variable</strong> (the one you are trying to predict).</p>
+</li>
+<li><p>x</p>
+<p>: The <strong>independent variable</strong> (the one you are using to predict).</p>
+</li>
+<li><p>β0</p>
+<p>: The <strong>y-intercept</strong>, the predicted value of <em>y</em> when <em>x</em> is zero.</p>
+</li>
+<li><p>β1</p>
+<p>: The <strong>slope</strong> of the line. It tells you how much <em>y</em> is expected to change for every one-unit increase in <em>x</em>.</p>
+</li>
+<li><p>ϵ</p>
+<p>: The <strong>error term</strong>, representing the difference between the actual <em>y</em> value and the predicted <em>y</em> value.</p>
+</li>
+</ul>
+<p><strong>Simple linear regression</strong> involves one independent variable, while <strong>multiple linear regression</strong> uses two or more independent variables to predict the dependent variable.</p>
+<hr class="docutils" />
+</section>
+<section id="simple-linear-regression-in-action">
+<h2><strong>8.2 Simple Linear Regression in Action</strong><a class="headerlink" href="#simple-linear-regression-in-action" title="Link to this heading">¶</a></h2>
+<p>Let’s revisit our correlation example: using a student’s attendance rate to predict their final exam score. A regression model takes this a step further by providing a predictive equation.</p>
+<p><em>Educational Example:</em> If we find that the relationship between attendance and final exam scores is described by the equation <em>Score</em> = 20 + 70 <em>Attendance Rate</em>, we can predict a student’s final score based on their attendance. A student with a 90% attendance rate (<em>0.90</em>) would be predicted to score <em>20 + 70 * (0.90) = 83</em>.</p>
+<hr class="docutils" />
+</section>
+<section id="multiple-linear-regression-for-policy-analysis">
+<h2><strong>8.3 Multiple Linear Regression for Policy Analysis</strong><a class="headerlink" href="#multiple-linear-regression-for-policy-analysis" title="Link to this heading">¶</a></h2>
+<p>Most real-world educational outcomes are influenced by more than one factor. Multiple linear regression allows us to build a more comprehensive model by including several independent variables. This helps us account for the complex interplay of different factors.</p>
+<p><em>Educational Example:</em> A policy analyst wants to predict student dropout rates. They might use multiple linear regression with independent variables such as:</p>
+<ul class="simple">
+<li><p>Student’s socioeconomic status.</p></li>
+<li><p>Number of teachers per student.</p></li>
+<li><p>School’s funding level.</p></li>
+<li><p>Parental involvement.</p></li>
+</ul>
+<p>The regression model will tell you how much each of these factors, <strong>while holding the others constant</strong>, contributes to the dropout rate. This is incredibly valuable for designing targeted interventions.</p>
+<hr class="docutils" />
+</section>
+<section id="running-regression-in-python">
+<h2><strong>8.4 Running Regression in Python</strong><a class="headerlink" href="#running-regression-in-python" title="Link to this heading">¶</a></h2>
+<p>For regression analysis, we’ll use the powerful <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> library, which provides a detailed statistical summary of the results.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+
+<span class="c1"># Fictional data: Number of resources (e.g., computers) and avg. test scores</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Resources_per_Student&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span>
+    <span class="s1">&#39;Average_Test_Score&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">55</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">95</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Step 1: Define the dependent (y) and independent (x) variables</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Average_Test_Score&#39;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Resources_per_Student&#39;</span><span class="p">]</span>
+
+<span class="c1"># Step 2: Add a constant to the independent variable matrix</span>
+<span class="c1"># This represents the intercept (beta_0) in the regression equation</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Step 3: Create and fit the regression model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># Step 4: Print the summary of the model</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The model summary provides a wealth of information, including the coefficients (</p>
+<p>β0</p>
+<p>and$$\beta_1$$), their p-values (to check for significance), and the R-squared (</p>
+<p>R2</p>
+<p>) value.</p>
+<p>R2</p>
+<p>tells you the proportion of the variance in the dependent variable that is predictable from the independent variable(s). For example, an</p>
+<p>R2</p>
+<p>of 0.70 means that 70% of the variation in the dependent variable is explained by the model.</p>
+<hr class="docutils" />
+</section>
+<section id="fully-worked-solution-analyzing-factors-affecting-student-dropout-rates-in-mozambique">
+<h2><strong>8.5 Fully Worked Solution: Analyzing Factors Affecting Student Dropout Rates in Mozambique</strong><a class="headerlink" href="#fully-worked-solution-analyzing-factors-affecting-student-dropout-rates-in-mozambique" title="Link to this heading">¶</a></h2>
+<p>Let’s use a fictitious dataset from the Mozambican Ministry of Education to analyze and predict student dropout rates. Policymakers are concerned about high dropout rates and want to understand which factors are most influential. We’ll use multiple linear regression to model this.</p>
+<p><strong>1. The Problem:</strong></p>
+<p>We need to predict student dropout rates based on multiple factors. Our dependent variable is <code class="docutils literal notranslate"><span class="pre">Dropout_Rate</span></code> (Ratio data), and our independent variables are <code class="docutils literal notranslate"><span class="pre">Teacher_Absence_Rate</span></code> (Ratio), <code class="docutils literal notranslate"><span class="pre">School_Funding</span></code> (Ratio), and <code class="docutils literal notranslate"><span class="pre">Student_to_Teacher_Ratio</span></code> (Ratio).</p>
+<p><strong>2. The Data:</strong></p>
+<p>Our dataset, <code class="docutils literal notranslate"><span class="pre">mozambique_schools.csv</span></code>, contains columns <code class="docutils literal notranslate"><span class="pre">Dropout_Rate</span></code>, <code class="docutils literal notranslate"><span class="pre">Teacher_Absence_Rate</span></code>, <code class="docutils literal notranslate"><span class="pre">School_Funding</span></code>, and <code class="docutils literal notranslate"><span class="pre">Student_to_Teacher_Ratio</span></code>.</p>
+<p><strong>3. The Analysis:</strong></p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+
+<span class="c1"># Load the dataset (fictitious data)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;mozambique_schools.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Step 1: Define the dependent (y) and independent (X) variables</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Dropout_Rate&#39;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Teacher_Absence_Rate&#39;</span><span class="p">,</span> <span class="s1">&#39;School_Funding&#39;</span><span class="p">,</span> <span class="s1">&#39;Student_to_Teacher_Ratio&#39;</span><span class="p">]]</span>
+
+<span class="c1"># Step 2: Add a constant for the intercept</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Step 3: Create and fit the multiple regression model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1"># Step 4: Print the summary</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><strong>4. Interpreting the Result:</strong></p>
+<p>Assuming our model summary shows a significant p-value for the F-statistic (at the bottom of the summary) and significant p-values for the individual coefficients:</p>
+<ul>
+<li><p>R2</p>
+<p>: Let’s say</p>
+<p>R2</p>
+<p>= 0.78. This means our model explains 78% of the variability in the dropout rate.</p>
+</li>
+<li><p><strong>Coefficients:</strong></p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Teacher_Absence_Rate</span></code>:</strong> A positive, significant coefficient (e.g., 0.52). Interpretation: For every 1 percentage point increase in teacher absence, the dropout rate is predicted to increase by 0.52 percentage points, <strong>holding other factors constant</strong>. This suggests teacher attendance is a strong predictor of dropout rates.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">School_Funding</span></code>:</strong> A negative, significant coefficient (e.g., -0.01). Interpretation: For every one unit increase in school funding, the dropout rate is predicted to decrease slightly.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Student_to_Teacher_Ratio</span></code>:</strong> A positive, significant coefficient (e.g., 0.15). Interpretation: For every one-unit increase in the student-to-teacher ratio, the dropout rate is predicted to increase.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Conclusion:</strong> Multiple linear regression reveals that teacher absence, school funding, and student-to-teacher ratio are all significant predictors of the student dropout rate in Mozambique. These findings can directly inform policy, highlighting the importance of improving teacher attendance, increasing school funding, and lowering class sizes to reduce student dropout.</p>
+<hr class="docutils" />
+</section>
+<section id="question-for-the-reader">
+<h2><strong>8.6 Question for the Reader</strong><a class="headerlink" href="#question-for-the-reader" title="Link to this heading">¶</a></h2>
+<p>A policy analyst in Rwanda is using multiple linear regression to predict student performance on a national exam. The model includes independent variables such as <code class="docutils literal notranslate"><span class="pre">Family_Income</span></code>, <code class="docutils literal notranslate"><span class="pre">School_Resources</span></code>, and <code class="docutils literal notranslate"><span class="pre">Parental_Education_Level</span></code>. After running the model, she finds that the coefficient for <code class="docutils literal notranslate"><span class="pre">School_Resources</span></code> is positive and statistically significant, while the coefficient for <code class="docutils literal notranslate"><span class="pre">Family_Income</span></code> is not significant.</p>
+<p><strong>Question:</strong> Based on these results, what is the most reasonable conclusion for a policymaker?</p>
+<p>A) Increasing school resources will not improve student performance because family income is a more important factor.</p>
+<p>B) The model is flawed because all variables should be significant.</p>
+<p>C) The amount of a school’s resources is a significant predictor of student performance, independent of a student’s family income.</p>
+<p>D) There is no relationship between school resources and student performance.</p>
+<p>[Answer: C]</p>
+<p>(Analysis: A positive and statistically significant coefficient for School_Resources means that school resources are a significant predictor of performance. The fact that Family_Income is not significant means that, in the presence of other variables in the model, it does not add significant predictive power. The strength of multiple regression is that it allows us to isolate the effect of one variable while controlling for others. Therefore, we can conclude that school resources have an impact on student performance, even after accounting for the influence of family income.)</p>
+<hr class="docutils" />
+</section>
+<section id="your-turn-analyzing-your-own-data">
+<h2><strong>8.7 Your Turn: Analyzing Your Own Data</strong><a class="headerlink" href="#your-turn-analyzing-your-own-data" title="Link to this heading">¶</a></h2>
+<p>Upload your own dataset with a dependent variable (e.g., a school’s graduation rate) and at least one independent variable that you believe influences it (e.g., per-student funding, teacher experience).</p>
+<p>I’ll help you:</p>
+<ul>
+<li><p>Identify the appropriate columns for your regression model.</p></li>
+<li><p>Run the Python code using <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>.</p></li>
+<li><p>Interpret the model summary, including the coefficients, p-values, and</p>
+<p>R2</p>
+<p>.</p>
+</li>
+<li><p>Translate the statistical findings into actionable policy insights.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">08 Predicting Outcomes: Simple and Multiple Linear Regression</a><ul>
+<li><a class="reference internal" href="#the-principles-of-linear-regression"><strong>8.1 The Principles of Linear Regression</strong></a></li>
+<li><a class="reference internal" href="#simple-linear-regression-in-action"><strong>8.2 Simple Linear Regression in Action</strong></a></li>
+<li><a class="reference internal" href="#multiple-linear-regression-for-policy-analysis"><strong>8.3 Multiple Linear Regression for Policy Analysis</strong></a></li>
+<li><a class="reference internal" href="#running-regression-in-python"><strong>8.4 Running Regression in Python</strong></a></li>
+<li><a class="reference internal" href="#fully-worked-solution-analyzing-factors-affecting-student-dropout-rates-in-mozambique"><strong>8.5 Fully Worked Solution: Analyzing Factors Affecting Student Dropout Rates in Mozambique</strong></a></li>
+<li><a class="reference internal" href="#question-for-the-reader"><strong>8.6 Question for the Reader</strong></a></li>
+<li><a class="reference internal" href="#your-turn-analyzing-your-own-data"><strong>8.7 Your Turn: Analyzing Your Own Data</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="07%20Regression.html"
+                          title="previous chapter"><strong>07 Analyzing Relationships: Correlation</strong></a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="09%20Geospatial%20Analysis.html"
+                          title="next chapter">09 The Power of Location: Geospatial Analysis of Educational Data</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/08 Multiple Linear Regression.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="09%20Geospatial%20Analysis.html" title="09 The Power of Location: Geospatial Analysis of Educational Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="07%20Regression.html" title="07 Analyzing Relationships: Correlation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">08 Predicting Outcomes: Simple and Multiple Linear Regression</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>

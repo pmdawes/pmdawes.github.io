@@ -1,0 +1,237 @@
+# 08 Predicting Outcomes: Simple and Multiple Linear Regression
+
+
+
+In the last chapter, we saw how correlation can tell us if two variables are related. But what if you want to use one or more variables to **predict** the value of another? This is the core purpose of **linear regression**. It allows policymakers and researchers to model relationships and forecast outcomes, providing a powerful tool for strategic planning.
+
+------
+
+
+
+#### **8.1 The Principles of Linear Regression**
+
+
+
+Linear regression finds the "best-fitting" straight line through a set of data points on a scatter plot. This line, known as the **regression line**, is defined by an equation:
+
+y=β0+β1x+ϵ
+
+- y
+
+  : The **dependent variable** (the one you are trying to predict).
+
+- x
+
+  : The **independent variable** (the one you are using to predict).
+
+- β0
+
+  : The **y-intercept**, the predicted value of *y* when *x* is zero.
+
+- β1
+
+  : The **slope** of the line. It tells you how much *y* is expected to change for every one-unit increase in *x*.
+
+- ϵ
+
+  : The **error term**, representing the difference between the actual *y* value and the predicted *y* value.
+
+**Simple linear regression** involves one independent variable, while **multiple linear regression** uses two or more independent variables to predict the dependent variable.
+
+------
+
+
+
+#### **8.2 Simple Linear Regression in Action**
+
+
+
+Let's revisit our correlation example: using a student's attendance rate to predict their final exam score. A regression model takes this a step further by providing a predictive equation.
+
+*Educational Example:* If we find that the relationship between attendance and final exam scores is described by the equation *Score* = 20 + 70 *Attendance Rate*, we can predict a student's final score based on their attendance. A student with a 90% attendance rate (*0.90*) would be predicted to score *20 + 70 \* (0.90) = 83*.
+
+------
+
+
+
+#### **8.3 Multiple Linear Regression for Policy Analysis**
+
+
+
+Most real-world educational outcomes are influenced by more than one factor. Multiple linear regression allows us to build a more comprehensive model by including several independent variables. This helps us account for the complex interplay of different factors.
+
+*Educational Example:* A policy analyst wants to predict student dropout rates. They might use multiple linear regression with independent variables such as:
+
+- Student's socioeconomic status.
+- Number of teachers per student.
+- School's funding level.
+- Parental involvement.
+
+The regression model will tell you how much each of these factors, **while holding the others constant**, contributes to the dropout rate. This is incredibly valuable for designing targeted interventions.
+
+------
+
+
+
+#### **8.4 Running Regression in Python**
+
+
+
+For regression analysis, we'll use the powerful `statsmodels` library, which provides a detailed statistical summary of the results.
+
+Python
+
+```
+import pandas as pd
+import statsmodels.api as sm
+
+# Fictional data: Number of resources (e.g., computers) and avg. test scores
+data = {
+    'Resources_per_Student': [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+    'Average_Test_Score': [55, 62, 70, 75, 80, 85, 90, 95]
+}
+df = pd.DataFrame(data)
+
+# Step 1: Define the dependent (y) and independent (x) variables
+y = df['Average_Test_Score']
+X = df['Resources_per_Student']
+
+# Step 2: Add a constant to the independent variable matrix
+# This represents the intercept (beta_0) in the regression equation
+X = sm.add_constant(X)
+
+# Step 3: Create and fit the regression model
+model = sm.OLS(y, X).fit()
+
+# Step 4: Print the summary of the model
+print(model.summary())
+```
+
+The model summary provides a wealth of information, including the coefficients (
+
+β0
+
+and$$\beta_1$$), their p-values (to check for significance), and the R-squared (
+
+R2
+
+) value. 
+
+R2
+
+ tells you the proportion of the variance in the dependent variable that is predictable from the independent variable(s). For example, an 
+
+R2
+
+ of 0.70 means that 70% of the variation in the dependent variable is explained by the model.
+
+------
+
+
+
+#### **8.5 Fully Worked Solution: Analyzing Factors Affecting Student Dropout Rates in Mozambique**
+
+
+
+Let's use a fictitious dataset from the Mozambican Ministry of Education to analyze and predict student dropout rates. Policymakers are concerned about high dropout rates and want to understand which factors are most influential. We'll use multiple linear regression to model this.
+
+**1. The Problem:**
+
+We need to predict student dropout rates based on multiple factors. Our dependent variable is `Dropout_Rate` (Ratio data), and our independent variables are `Teacher_Absence_Rate` (Ratio), `School_Funding` (Ratio), and `Student_to_Teacher_Ratio` (Ratio).
+
+**2. The Data:**
+
+Our dataset, `mozambique_schools.csv`, contains columns `Dropout_Rate`, `Teacher_Absence_Rate`, `School_Funding`, and `Student_to_Teacher_Ratio`.
+
+**3. The Analysis:**
+
+Python
+
+```
+import pandas as pd
+import statsmodels.api as sm
+
+# Load the dataset (fictitious data)
+df = pd.read_csv('mozambique_schools.csv')
+
+# Step 1: Define the dependent (y) and independent (X) variables
+y = df['Dropout_Rate']
+X = df[['Teacher_Absence_Rate', 'School_Funding', 'Student_to_Teacher_Ratio']]
+
+# Step 2: Add a constant for the intercept
+X = sm.add_constant(X)
+
+# Step 3: Create and fit the multiple regression model
+model = sm.OLS(y, X).fit()
+
+# Step 4: Print the summary
+print(model.summary())
+```
+
+**4. Interpreting the Result:**
+
+Assuming our model summary shows a significant p-value for the F-statistic (at the bottom of the summary) and significant p-values for the individual coefficients:
+
+- R2
+
+  : Let's say 
+
+  R2
+
+   = 0.78. This means our model explains 78% of the variability in the dropout rate.
+
+- **Coefficients:**
+
+  - **`Teacher_Absence_Rate`:** A positive, significant coefficient (e.g., 0.52). Interpretation: For every 1 percentage point increase in teacher absence, the dropout rate is predicted to increase by 0.52 percentage points, **holding other factors constant**. This suggests teacher attendance is a strong predictor of dropout rates.
+  - **`School_Funding`:** A negative, significant coefficient (e.g., -0.01). Interpretation: For every one unit increase in school funding, the dropout rate is predicted to decrease slightly.
+  - **`Student_to_Teacher_Ratio`:** A positive, significant coefficient (e.g., 0.15). Interpretation: For every one-unit increase in the student-to-teacher ratio, the dropout rate is predicted to increase.
+
+**Conclusion:** Multiple linear regression reveals that teacher absence, school funding, and student-to-teacher ratio are all significant predictors of the student dropout rate in Mozambique. These findings can directly inform policy, highlighting the importance of improving teacher attendance, increasing school funding, and lowering class sizes to reduce student dropout.
+
+------
+
+
+
+#### **8.6 Question for the Reader**
+
+
+
+A policy analyst in Rwanda is using multiple linear regression to predict student performance on a national exam. The model includes independent variables such as `Family_Income`, `School_Resources`, and `Parental_Education_Level`. After running the model, she finds that the coefficient for `School_Resources` is positive and statistically significant, while the coefficient for `Family_Income` is not significant.
+
+**Question:** Based on these results, what is the most reasonable conclusion for a policymaker?
+
+A) Increasing school resources will not improve student performance because family income is a more important factor.
+
+B) The model is flawed because all variables should be significant.
+
+C) The amount of a school's resources is a significant predictor of student performance, independent of a student's family income.
+
+D) There is no relationship between school resources and student performance.
+
+[Answer: C]
+
+(Analysis: A positive and statistically significant coefficient for School_Resources means that school resources are a significant predictor of performance. The fact that Family_Income is not significant means that, in the presence of other variables in the model, it does not add significant predictive power. The strength of multiple regression is that it allows us to isolate the effect of one variable while controlling for others. Therefore, we can conclude that school resources have an impact on student performance, even after accounting for the influence of family income.)
+
+------
+
+
+
+#### **8.7 Your Turn: Analyzing Your Own Data**
+
+
+
+Upload your own dataset with a dependent variable (e.g., a school's graduation rate) and at least one independent variable that you believe influences it (e.g., per-student funding, teacher experience).
+
+I'll help you:
+
+- Identify the appropriate columns for your regression model.
+
+- Run the Python code using `statsmodels`.
+
+- Interpret the model summary, including the coefficients, p-values, and 
+
+  R2
+
+  .
+
+- Translate the statistical findings into actionable policy insights.

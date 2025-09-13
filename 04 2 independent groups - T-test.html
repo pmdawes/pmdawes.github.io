@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>04 The T-test - Comparing Averages &#8212; Stats for EID</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="05 Comparing Groups: The Paired Samples t-test" href="05%202%20dependent%20groups%20-%20T-test.html" />
+    <link rel="prev" title="03 Descriptive Statistics" href="03%20Descriptive%20Stats.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="05%202%20dependent%20groups%20-%20T-test.html" title="05 Comparing Groups: The Paired Samples t-test"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="03%20Descriptive%20Stats.html" title="03 Descriptive Statistics"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">04 The T-test - Comparing Averages</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="the-t-test-comparing-averages">
+<h1>04 The T-test - Comparing Averages<a class="headerlink" href="#the-t-test-comparing-averages" title="Link to this heading">¶</a></h1>
+<section id="what-is-a-t-test">
+<h2>What is a T-test?<a class="headerlink" href="#what-is-a-t-test" title="Link to this heading">¶</a></h2>
+<p>The t-test is one of the most fundamental tools in a data analyst’s toolkit, especially when working with educational policy. At its core, the <strong>t-test is a statistical method used to determine if there is a significant difference between the means of two groups</strong>.</p>
+<p>Think about it this way: We’ve implemented a new, inquiry-based curriculum in half of the schools in a district, while the other half continues with the traditional curriculum. At the end of the year, we want to know if the new curriculum made a difference in student test scores. We can’t simply look at the averages and say, “The new curriculum group had an average score of 85, and the old one had 83, so the new one is better.” That difference of 2 points might just be due to random chance. The t-test helps us quantify the probability that this difference is a real effect, rather than just random variation.</p>
+<p>Here are some other educational policy questions a t-test can help us answer:</p>
+<ul class="simple">
+<li><p>Does the average attendance rate differ significantly between students who participate in an after-school mentorship program and those who don’t?</p></li>
+<li><p>Is there a significant difference in teacher job satisfaction scores between teachers in urban vs. rural schools?</p></li>
+<li><p>Do students who receive a school-provided lunch have a significantly different average test score than those who bring their own?</p></li>
+</ul>
+</section>
+<section id="how-to-interpret-the-results-and-assumptions-to-check">
+<h2>How to Interpret the Results and Assumptions to Check<a class="headerlink" href="#how-to-interpret-the-results-and-assumptions-to-check" title="Link to this heading">¶</a></h2>
+<p>When you run a t-test, you get two main outputs: the <strong>t-statistic</strong> and the <strong>p-value</strong>.</p>
+<ul class="simple">
+<li><p>The <strong>t-statistic</strong> is a measure of the difference between the two groups relative to the variability within the groups. A larger t-statistic (in absolute value) suggests a greater difference between the group means.</p></li>
+<li><p>The <strong>p-value</strong> is the probability of observing a difference as large as the one in your sample, assuming there is no real difference between the groups in the population. The standard threshold for significance in social sciences is typically <strong>0.05</strong>. If your p-value is less than 0.05, you can say that the difference between the two groups is <strong>statistically significant</strong>, meaning it’s unlikely to have occurred by random chance.</p></li>
+</ul>
+<section id="key-assumptions-of-the-t-test">
+<h3>Key Assumptions of the T-test:<a class="headerlink" href="#key-assumptions-of-the-t-test" title="Link to this heading">¶</a></h3>
+<p>Before you run a t-test, it’s crucial to check that your data meets certain assumptions. Violating these assumptions can lead to unreliable results.</p>
+<ol class="arabic simple">
+<li><p><strong>Independence</strong>: The observations in each group must be independent of each other. For example, the test scores of one student should not influence the test scores of another. This is often the most important assumption to meet.</p></li>
+<li><p><strong>Normality</strong>: The data in each of the two groups should be approximately normally distributed. While t-tests are fairly robust to violations of this assumption with larger sample sizes, it’s good practice to check this with a histogram or a Q-Q plot.</p></li>
+<li><p><strong>Homogeneity of Variances</strong> (for the standard Student’s t-test): The variance (or spread) of the data in both groups should be roughly equal. If they are not, you should use a version of the t-test that accounts for unequal variances (like Welch’s t-test).</p></li>
+</ol>
+<p>Let’s look at three examples:</p>
+<ol class="arabic simple">
+<li><p><strong>Scenario</strong>: You compare the average math scores of students in a new digital learning program (Group A) with a control group using traditional methods (Group B).</p>
+<ul class="simple">
+<li><p><strong>Result</strong>: The p-value is 0.01.</p></li>
+<li><p><strong>Interpretation</strong>: Since 0.01 is less than 0.05, the difference in average scores is statistically significant. You can conclude that the digital learning program had a real impact on math scores, assuming all assumptions are met.</p></li>
+</ul>
+</li>
+<li><p><strong>Scenario</strong>: You analyze the average hours spent on homework per week by students who have access to a school library on weekends vs. those who do not.</p>
+<ul class="simple">
+<li><p><strong>Result</strong>: The p-value is 0.23.</p></li>
+<li><p><strong>Interpretation</strong>: Since 0.23 is greater than 0.05, the difference is not statistically significant. You cannot confidently conclude that having weekend library access leads to more or less homework time. The observed difference could be due to random chance.</p></li>
+</ul>
+</li>
+<li><p><strong>Scenario</strong>: You compare the average class sizes in public schools vs. private schools and find a large difference, but your sample size is very small (e.g., 5 schools per group).</p>
+<ul class="simple">
+<li><p><strong>Interpretation</strong>: Even if you get a small p-value, you must be cautious. A small sample size can make it difficult to trust the normality and homogeneity of variance assumptions. You’d need to explicitly state this limitation in your analysis.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="testing-interactive-code-blocks">
+<h2>Testing interactive code blocks<a class="headerlink" href="#testing-interactive-code-blocks" title="Link to this heading">¶</a></h2>
+</section>
+<section id="how-to-run-a-t-test-in-python">
+<h2>How to Run a T-test in Python<a class="headerlink" href="#how-to-run-a-t-test-in-python" title="Link to this heading">¶</a></h2>
+<p>Python makes running a t-test incredibly straightforward, especially with libraries like <code class="docutils literal notranslate"><span class="pre">SciPy</span></code>. We will use the <code class="docutils literal notranslate"><span class="pre">ttest_ind</span></code> function from the <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> module.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import necessary libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="c1"># Assuming you have two data series, &#39;group_a&#39; and &#39;group_b&#39;</span>
+<span class="c1"># Let&#39;s create some dummy data for now</span>
+<span class="n">group_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">78</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">86</span><span class="p">]</span>
+<span class="n">group_b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">79</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">74</span><span class="p">]</span>
+
+<span class="c1"># Perform the independent t-test</span>
+<span class="n">t_statistic</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">group_a</span><span class="p">,</span> <span class="n">group_b</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-statistic: </span><span class="si">{</span><span class="n">t_statistic</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Interpret the result</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The difference between the two groups is statistically significant.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The difference between the two groups is not statistically significant.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">ttest_ind</span></code> function has an optional parameter, <code class="docutils literal notranslate"><span class="pre">equal_var</span></code>, which is <code class="docutils literal notranslate"><span class="pre">True</span></code> by default. This assumes equal variances. If you have checked your data and found that the variances are unequal, you can set <code class="docutils literal notranslate"><span class="pre">equal_var=False</span></code> to perform Welch’s t-test.</p>
+</section>
+<hr class="docutils" />
+<section id="a-fully-worked-solution-the-impact-of-teacher-training">
+<h2>A Fully Worked Solution: The Impact of Teacher Training<a class="headerlink" href="#a-fully-worked-solution-the-impact-of-teacher-training" title="Link to this heading">¶</a></h2>
+<p>For this example, we will use a fictitious dataset based on teacher and student performance data from Kenya. Our goal is to determine if a new professional development program for teachers has a significant impact on their students’ end-of-year standardized test scores.</p>
+<section id="identifying-why-you-d-use-this-test">
+<h3>1. Identifying Why You’d Use This Test<a class="headerlink" href="#identifying-why-you-d-use-this-test" title="Link to this heading">¶</a></h3>
+<p>We want to compare the average test scores of students taught by teachers who received the new training program against the scores of students whose teachers did not. We have two independent groups, and we are comparing their means. This is a classic case for an <strong>independent samples t-test</strong>.</p>
+</section>
+<section id="the-data">
+<h3>2. The Data<a class="headerlink" href="#the-data" title="Link to this heading">¶</a></h3>
+<p>Our dataset, <code class="docutils literal notranslate"><span class="pre">kenya_education_data.csv</span></code>, contains a column for <code class="docutils literal notranslate"><span class="pre">test_score</span></code> and a categorical column <code class="docutils literal notranslate"><span class="pre">teacher_training_program</span></code> with values ‘Trained’ and ‘Not Trained’.</p>
+</section>
+<section id="running-the-test">
+<h3>3. Running the Test<a class="headerlink" href="#running-the-test" title="Link to this heading">¶</a></h3>
+<p>We’ll load the data into a pandas DataFrame, separate the two groups, and then run the t-test.</p>
+<p>Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assuming you have the data in a CSV file</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;kenya_education_data.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Separate the groups</span>
+<span class="n">trained_teachers</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;teacher_training_program&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Trained&#39;</span><span class="p">][</span><span class="s1">&#39;test_score&#39;</span><span class="p">]</span>
+<span class="n">untrained_teachers</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;teacher_training_program&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Not Trained&#39;</span><span class="p">][</span><span class="s1">&#39;test_score&#39;</span><span class="p">]</span>
+
+<span class="c1"># Perform the t-test</span>
+<span class="n">t_stat</span><span class="p">,</span> <span class="n">p_val</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">trained_teachers</span><span class="p">,</span> <span class="n">untrained_teachers</span><span class="p">,</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-statistic: </span><span class="si">{</span><span class="n">t_stat</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value: </span><span class="si">{</span><span class="n">p_val</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s also look at the means to understand the direction of the difference</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean score for trained teachers: </span><span class="si">{</span><span class="n">trained_teachers</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean score for untrained teachers: </span><span class="si">{</span><span class="n">untrained_teachers</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="interpreting-the-result">
+<h3>4. Interpreting the Result<a class="headerlink" href="#interpreting-the-result" title="Link to this heading">¶</a></h3>
+<p>Let’s assume the output is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="o">-</span><span class="n">statistic</span><span class="p">:</span> <span class="mf">3.52</span>
+<span class="n">P</span><span class="o">-</span><span class="n">value</span><span class="p">:</span> <span class="mf">0.0005</span>
+<span class="n">Mean</span> <span class="n">score</span> <span class="k">for</span> <span class="n">trained</span> <span class="n">teachers</span><span class="p">:</span> <span class="mf">78.50</span>
+<span class="n">Mean</span> <span class="n">score</span> <span class="k">for</span> <span class="n">untrained</span> <span class="n">teachers</span><span class="p">:</span> <span class="mf">72.30</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>P-value</strong>: The p-value is 0.0005. Since this is much less than our significance level of 0.05, we conclude that the difference is <strong>statistically significant</strong>.</p></li>
+<li><p><strong>Means</strong>: The average score for students with trained teachers is 78.50, which is higher than the average score of 72.30 for students with untrained teachers.</p></li>
+<li><p><strong>Conclusion</strong>: Based on this analysis, there is strong statistical evidence to suggest that the teacher training program had a positive and significant impact on student test scores. As a policy analyst, this result would support the recommendation to expand the program to more teachers.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="your-turn-analyzing-student-attendance">
+<h2>Your Turn: Analyzing Student Attendance<a class="headerlink" href="#your-turn-analyzing-student-attendance" title="Link to this heading">¶</a></h2>
+<p>Now, it’s your turn to apply what you’ve learned. Consider a scenario in Uganda, where a new policy provides a small daily stipend to families of students with perfect attendance. You have a publicly available, fictitious dataset <code class="docutils literal notranslate"><span class="pre">uganda_attendance.csv</span></code> which contains two columns: <code class="docutils literal notranslate"><span class="pre">attendance_rate</span></code> (a percentage) and <code class="docutils literal notranslate"><span class="pre">stipend_group</span></code> (‘Stipend’ or ‘No Stipend’).</p>
+<p><strong>Question</strong>: You want to determine if there is a statistically significant difference in the average attendance rate between the two groups. What would you do?</p>
+<p>A) Use a Chi-Square test to compare the groups.</p>
+<p>B) Conduct an independent samples t-test to compare the mean attendance rates.</p>
+<p>C) Calculate the correlation between attendance_rate and stipend_group.</p>
+<p>D) Create a histogram of attendance_rate and visually compare the two groups.</p>
+<br>
+<br>
+<p><strong>Click below to see the correct answer and analysis.</strong></p>
+<details>
+<summary>Answer</summary>
+<p>The correct answer is B). Here’s why:</p>
+<ul class="simple">
+<li><p>You have a <strong>continuous dependent variable</strong> (<code class="docutils literal notranslate"><span class="pre">attendance_rate</span></code>) and a <strong>categorical independent variable with two levels</strong> (<code class="docutils literal notranslate"><span class="pre">stipend_group</span></code>).</p></li>
+<li><p>Your goal is to compare the <strong>means</strong> of these two groups to see if the difference is statistically significant.</p></li>
+<li><p>This specific problem is perfectly suited for an <strong>independent samples t-test</strong>.</p></li>
+</ul>
+<p><strong>Why the others are incorrect:</strong></p>
+<ul class="simple">
+<li><p><strong>A)</strong> A Chi-Square test is used for comparing relationships between two <strong>categorical</strong> variables.</p></li>
+<li><p><strong>C)</strong> Correlation measures the strength of a linear relationship between two <strong>continuous</strong> variables.</p></li>
+<li><p><strong>D)</strong> A histogram is a great first step for visualization and checking assumptions (like normality), but it’s not a statistical test that can determine significance.</p></li>
+</ul>
+</details>
+</section>
+<hr class="docutils" />
+<section id="your-own-data-analysis">
+<h2>Your Own Data Analysis<a class="headerlink" href="#your-own-data-analysis" title="Link to this heading">¶</a></h2>
+<p>Now, I invite you to take these skills and apply them to a dataset of your own. If you have a two-group comparison question, I can help you structure the analysis.</p>
+<p><strong>Please share a brief description of your data and the two groups you wish to compare, and I will guide you through the process of running a t-test and interpreting the results.</strong></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">04 The T-test - Comparing Averages</a><ul>
+<li><a class="reference internal" href="#what-is-a-t-test">What is a T-test?</a></li>
+<li><a class="reference internal" href="#how-to-interpret-the-results-and-assumptions-to-check">How to Interpret the Results and Assumptions to Check</a><ul>
+<li><a class="reference internal" href="#key-assumptions-of-the-t-test">Key Assumptions of the T-test:</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-interactive-code-blocks">Testing interactive code blocks</a></li>
+<li><a class="reference internal" href="#how-to-run-a-t-test-in-python">How to Run a T-test in Python</a></li>
+<li><a class="reference internal" href="#a-fully-worked-solution-the-impact-of-teacher-training">A Fully Worked Solution: The Impact of Teacher Training</a><ul>
+<li><a class="reference internal" href="#identifying-why-you-d-use-this-test">1. Identifying Why You’d Use This Test</a></li>
+<li><a class="reference internal" href="#the-data">2. The Data</a></li>
+<li><a class="reference internal" href="#running-the-test">3. Running the Test</a></li>
+<li><a class="reference internal" href="#interpreting-the-result">4. Interpreting the Result</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#your-turn-analyzing-student-attendance">Your Turn: Analyzing Student Attendance</a></li>
+<li><a class="reference internal" href="#your-own-data-analysis">Your Own Data Analysis</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="03%20Descriptive%20Stats.html"
+                          title="previous chapter">03 Descriptive Statistics</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="05%202%20dependent%20groups%20-%20T-test.html"
+                          title="next chapter">05 Comparing Groups: The Paired Samples t-test</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/04 2 independent groups - T-test.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="05%202%20dependent%20groups%20-%20T-test.html" title="05 Comparing Groups: The Paired Samples t-test"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="03%20Descriptive%20Stats.html" title="03 Descriptive Statistics"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Stats for EID</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">04 The T-test - Comparing Averages</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Patrick Mroz-Dawes.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    </div>
+  </body>
+</html>
