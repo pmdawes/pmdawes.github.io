@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="./">
@@ -6,17 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>02 Python &#8212; Stats for EID</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=5283bb3d" />
     
     <script src="_static/documentation_options.js?v=2709fde1"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    
+    <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="03 Descriptive Statistics" href="03%20Descriptive%20Stats.html" />
-    <link rel="prev" title="01 Data types" href="01%20Data%20Types.html" /> 
+    <link rel="prev" title="01 Data types" href="01%20Data%20Types.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
   </head><body>
     <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
@@ -42,9 +47,25 @@
             
   <section id="python">
 <h1>02 Python<a class="headerlink" href="#python" title="Link to this heading">¶</a></h1>
-<p>Now that we understand the language of data, it’s time to learn how to speak with it using a powerful tool: Python. This chapter will get you set up and comfortable with the basics of using Python for data analysis, focusing on the libraries that will become your best friends on this journey.</p>
+<section id="edits">
+<h2>Edits<a class="headerlink" href="#edits" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Change so it’s all done through an online environment.</p></li>
+<li><p>More on data cleaning</p></li>
+</ol>
+</section>
+<section id="introduction">
+<h2>2.1 Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>Python is.</p>
+<p>It’s free.</p>
+<p>It will allow you to do lots of stats.</p>
+<p>You can run Python from Excel or on its own. We’re going to do it in a notebook because it’s easier to read and lean this way.</p>
+<p>It’s reproducible. For example…</p>
+<p>It’s great for cleaning data. For example…</p>
+<p>It’ll take ages to learn to use it properly. This is giving you enough to do the basics, so you can learn the specifics you need, or you can as AI to teach you more, or you can get an expert from a freelancing site like Upwork.</p>
+<p>You might not bother use it: AI can do all this. The advantage is it’ll show your working, and allow others to follow along with your thinking. You can do a lot of that with AI too, but it’s more difficult to check what the AI is doing.</p>
 <section id="setting-up-your-python-environment">
-<h2><strong>2.1 Setting Up Your Python Environment</strong><a class="headerlink" href="#setting-up-your-python-environment" title="Link to this heading">¶</a></h2>
+<h3><strong>2.1 Setting Up Your Python Environment</strong><a class="headerlink" href="#setting-up-your-python-environment" title="Link to this heading">¶</a></h3>
 <p>The easiest way to get started with Python for data analysis is to install <strong>Anaconda</strong>. It’s a free, open-source distribution that comes with Python and all the essential libraries we’ll need pre-installed, like <strong>Pandas</strong>, <strong>NumPy</strong>, and <strong>Matplotlib</strong>. It also includes <strong>Jupyter Notebook</strong>, which is the ideal environment for writing and running our code.</p>
 <ul class="simple">
 <li><p><strong>Step 1: Download Anaconda.</strong> Go to the official Anaconda website and download the installer for your operating system.</p></li>
@@ -53,7 +74,7 @@
 </ul>
 </section>
 <section id="the-basics-of-python-variables-data-structures-and-functions">
-<h2><strong>2.2 The Basics of Python: Variables, Data Structures, and Functions</strong><a class="headerlink" href="#the-basics-of-python-variables-data-structures-and-functions" title="Link to this heading">¶</a></h2>
+<h3><strong>2.2 The Basics of Python: Variables, Data Structures, and Functions</strong><a class="headerlink" href="#the-basics-of-python-variables-data-structures-and-functions" title="Link to this heading">¶</a></h3>
 <p>Python is known for its readability. Here are a few fundamental concepts you’ll encounter.</p>
 <ul>
 <li><p><strong>Variables:</strong> Think of a variable as a labeled container for a value. You can store numbers, text, or more complex data in them.</p>
@@ -106,7 +127,7 @@
 </ul>
 </section>
 <section id="introduction-to-pandas-dataframes-and-series">
-<h2><strong>2.3 Introduction to Pandas: DataFrames and Series</strong><a class="headerlink" href="#introduction-to-pandas-dataframes-and-series" title="Link to this heading">¶</a></h2>
+<h3><strong>2.3 Introduction to Pandas: DataFrames and Series</strong><a class="headerlink" href="#introduction-to-pandas-dataframes-and-series" title="Link to this heading">¶</a></h3>
 <p>While native Python is powerful, we need specialized tools for handling large datasets. This is where <strong>Pandas</strong> comes in. Pandas is a library that makes working with structured data fast and easy. Its two main data structures are the <strong>Series</strong> and the <strong>DataFrame</strong>.</p>
 <ul class="simple">
 <li><p><strong>Series:</strong> A one-dimensional labeled array. You can think of it as a single column from a spreadsheet.</p></li>
@@ -142,7 +163,7 @@
 <p>As you can see, the DataFrame is a clean, organized table that makes our data easy to read and manipulate.</p>
 </section>
 <section id="importing-and-cleaning-educational-data">
-<h2><strong>2.4 Importing and Cleaning Educational Data</strong><a class="headerlink" href="#importing-and-cleaning-educational-data" title="Link to this heading">¶</a></h2>
+<h3><strong>2.4 Importing and Cleaning Educational Data</strong><a class="headerlink" href="#importing-and-cleaning-educational-data" title="Link to this heading">¶</a></h3>
 <p>Real-world data is rarely perfect. It often has missing values, typos, or inconsistent formatting. Pandas has excellent tools for handling these issues.</p>
 <p>The most common way to import data is from a CSV (Comma-Separated Values) file. Most educational datasets are available in this format.</p>
 <p>Python</p>
@@ -169,6 +190,7 @@
 <p>Understanding how to import and get a quick look at your data is the first step toward a successful analysis. We’ll delve deeper into data cleaning in later chapters, but for now, you have the foundational skills to begin.</p>
 </section>
 </section>
+</section>
 
 
             <div class="clearer"></div>
@@ -181,10 +203,14 @@
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">02 Python</a><ul>
+<li><a class="reference internal" href="#edits">Edits</a></li>
+<li><a class="reference internal" href="#introduction">2.1 Introduction</a><ul>
 <li><a class="reference internal" href="#setting-up-your-python-environment"><strong>2.1 Setting Up Your Python Environment</strong></a></li>
 <li><a class="reference internal" href="#the-basics-of-python-variables-data-structures-and-functions"><strong>2.2 The Basics of Python: Variables, Data Structures, and Functions</strong></a></li>
 <li><a class="reference internal" href="#introduction-to-pandas-dataframes-and-series"><strong>2.3 Introduction to Pandas: DataFrames and Series</strong></a></li>
 <li><a class="reference internal" href="#importing-and-cleaning-educational-data"><strong>2.4 Importing and Cleaning Educational Data</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

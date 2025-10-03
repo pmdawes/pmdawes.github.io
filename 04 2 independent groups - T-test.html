@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="./">
@@ -6,17 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>04 The T-test - Comparing Averages &#8212; Stats for EID</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css?v=5283bb3d" />
     
     <script src="_static/documentation_options.js?v=2709fde1"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    
+    <script src="_static/bizstyle.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="05 Comparing Groups: The Paired Samples t-test" href="05%202%20dependent%20groups%20-%20T-test.html" />
-    <link rel="prev" title="03 Descriptive Statistics" href="03%20Descriptive%20Stats.html" /> 
+    <link rel="prev" title="03 Descriptive Statistics" href="03%20Descriptive%20Stats.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
   </head><body>
     <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
@@ -44,6 +49,17 @@
 <h1>04 The T-test - Comparing Averages<a class="headerlink" href="#the-t-test-comparing-averages" title="Link to this heading">¶</a></h1>
 <section id="what-is-a-t-test">
 <h2>What is a T-test?<a class="headerlink" href="#what-is-a-t-test" title="Link to this heading">¶</a></h2>
+<p>The t-test helps you compare two groups.</p>
+<ul class="simple">
+<li><p>Comparing <strong>the impact of homework</strong>. You want to know if giving homework has an impact on test scores. You teach two different classes on the same topic for a term. One class gets homework once a week, the other class doesn’t get any homework. You use a t-test to compare exam results at the end of term.</p></li>
+<li><p>Compare <strong>two teaching methods</strong>. You want to know if flipped learning will work for your school district. You try a flipped approach in twenty schools, and compare with traditional approach in twenty other schools.</p></li>
+<li><p>It could be the <strong>same group but at two different times</strong>. We’ll look at this in the next chapter.</p>
+<ul>
+<li><p>for example, you might measure a class’ knowledge of multiplication facts at the start of term, and then again at the end of term. This is a ‘paired’ t-test, because you’re looking at the same group.</p></li>
+</ul>
+</li>
+</ul>
+<p>This chapter considers <strong>independent</strong> groups.</p>
 <p>The t-test is one of the most fundamental tools in a data analyst’s toolkit, especially when working with educational policy. At its core, the <strong>t-test is a statistical method used to determine if there is a significant difference between the means of two groups</strong>.</p>
 <p>Think about it this way: We’ve implemented a new, inquiry-based curriculum in half of the schools in a district, while the other half continues with the traditional curriculum. At the end of the year, we want to know if the new curriculum made a difference in student test scores. We can’t simply look at the averages and say, “The new curriculum group had an average score of 85, and the old one had 83, so the new one is better.” That difference of 2 points might just be due to random chance. The t-test helps us quantify the probability that this difference is a real effect, rather than just random variation.</p>
 <p>Here are some other educational policy questions a t-test can help us answer:</p>
